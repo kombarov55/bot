@@ -9,7 +9,28 @@ app = Flask(__name__)
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
-keyboard = '{"one_time": false, "buttons": [{"action": {"type": "text", "label": "Red"}, "color": "negative"}]}'
+keyboard = {
+    'one_time': False,
+    'buttons': [[{
+        'action': {
+            'type': 'text',
+            'payload': json.dumps({'buttons': '1'}),
+            'label': 'Предыдущая',
+        },
+        'color': 'negative'
+    },
+    {
+        'action': {
+            'type': 'text',
+            'payload': json.dumps({'buttons': '2'}),
+            'label': 'Pred',
+        },
+        'color': 'primary'
+    }
+    ]]
+}
+keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+keyboard = str(keyboard.decode('utf-8'))
 
 
 def getRandomPrediction():
