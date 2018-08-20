@@ -11,7 +11,7 @@ userId_to_prediction = {}
 
 keyboard = {
     'one_time': False,
-    'buttons': [[{
+    'buttons': [{
         'action': {
             'type': 'text',
             'payload': json.dumps({'buttons': '1'}),
@@ -27,7 +27,7 @@ keyboard = {
         },
         'color': 'primary'
     }
-    ]]
+    ]
 }
 keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
 keyboard = str(keyboard.decode('utf-8'))
@@ -76,7 +76,7 @@ def processing():
         text = data["object"]["body"]
 
 
-        api.messages.send(access_token=token, user_id=str(userId), message=keyboard)
+        api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard)
         
         return 'ok'
 
