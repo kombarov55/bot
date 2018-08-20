@@ -29,8 +29,8 @@ keyboard = {
     }
     ]]
 }
-keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-7')
-keyboard = str(keyboard.decode('utf-7'))
+keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+keyboard = str(keyboard.decode('utf-8'))
 
 
 def getRandomPrediction():
@@ -71,7 +71,7 @@ def processing():
         return confirmationToken
     elif data['type'] == 'message_new':
         session = vk.Session()
-        api = vk.API(session, v=5.80)
+        api = vk.API(session, v=5.0)
         userId = data['object']['user_id']
         text = data["object"]["body"]
 
