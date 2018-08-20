@@ -29,8 +29,8 @@ keyboard = {
     }
     ]]
 }
-keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
-keyboard = str(keyboard.decode('utf-8'))
+keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-7')
+keyboard = str(keyboard.decode('utf-7'))
 
 
 def getRandomPrediction():
@@ -75,8 +75,9 @@ def processing():
         userId = data['object']['user_id']
         text = data["object"]["body"]
 
-        session.method("messages.send", {"user_id": userId, "message": text})
 
+        api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard)
+        
         return 'ok'
 
 predictions = [
