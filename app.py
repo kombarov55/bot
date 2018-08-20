@@ -90,7 +90,7 @@ def processing():
         userId = data['object']['user_id']
         text = data["object"]["body"]
 
-        result = getPrediction(userId)
+
         api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard)
         
         return 'ok'
