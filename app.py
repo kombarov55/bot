@@ -11,39 +11,39 @@ userId_to_prediction = {}
 
 keyboard = """keyboard:
 {
-    'one_time': false,
-    'buttons': [
+    "one_time": false,
+    "buttons": [
       [{
-        'action': {
-          'type': 'text',
-          'payload': {'button': '1'},
-          'label': 'Red'
+        "action": {
+          "type": "text",
+          "payload": {"button": "1"},
+          "label": "Red"
         },
-        'color': 'negative'
+        "color": "negative"
       },
      {
-        'action': {
-          'type': 'text',
-          'payload': {'button': '2'},
-          'label': 'Green'
+        "action": {
+          "type": "text",
+          "payload": {"button": "2"},
+          "label": "Green"
         },
-        'color': 'positive'
+        "color": "positive"
       }],
       [{
-        'action': {
-          'type': 'text',
-          'payload': {'button': '3'},
-          'label': 'White'
+        "action": {
+          "type": "text",
+          "payload": {"button": "3"},
+          "label": "White"
         },
-        'color': 'default'
+        "color": "default"
       },
      {
-        'action': {
-          'type': 'text',
-          'payload': {'button': '4'},
-          'label': 'Blue'
+        "action": {
+          "type": "text",
+          "payload": {"button": "4"},
+          "label": "Blue"
         },
-        'color': 'primary'
+        "color": "primary"
       }]
     ]
   } """
