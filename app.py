@@ -101,3 +101,7 @@ predictions = [
     "Не оставляйте усилий и получите желаемое",
     "Кто-то нуждается в вашей поддержке"
 ]
+
+
+token = "bf0caf1fb36202a7489084a98ff6bf484f71120a44e952349f4c97c6b42b153ce7425cfde6f0d80220acc"
+confirmationToken = "be8af98b"
