@@ -2,6 +2,7 @@
 from flask import Flask, request, json
 from datetime import datetime as dt
 from random import randint
+
 app = Flask(__name__)
 
 userId_to_lastUpdateTime = {}
