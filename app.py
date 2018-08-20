@@ -29,8 +29,21 @@ def hello_world():
 
 @app.route('/', methods=['POST'])
 def processing():
-    return "bf0caf1fb36202a7489084a98ff6bf484f71120a44e952349f4c97c6b42b153ce7425cfde6f0d80220acc"
+    data = json.loads(request.data)
+    if 'type' not in data.keys():
+        return 'not vk'
+    if data['type'] == 'confirmation':
+        return confirmationToken
+    elif data['type'] == 'message_new':
+        session = vk.Session()
+        api = vk.API(session, v=5.0)
+        userId = data['object']['user_id']
+        text = data["object"]["body"]
 
+        result = getPrediction(userId)
+        api.messages.send(access_token=token, user_id=str(userId), message=result)
+        
+        return 'ok'
 
 predictions = [
     "Романтика создаст для вас новое направление",
