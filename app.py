@@ -9,43 +9,16 @@ app = Flask(__name__)
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
-keyboard = """keyboard:
-{
+keyboard = """keyboard: {
     "one_time": false,
-    "buttons": [
-      [{
+    "buttons": [{
         "action": {
           "type": "text",
           "payload": {"button": "1"},
           "label": "Red"
         },
         "color": "negative"
-      },
-     {
-        "action": {
-          "type": "text",
-          "payload": {"button": "2"},
-          "label": "Green"
-        },
-        "color": "positive"
-      }],
-      [{
-        "action": {
-          "type": "text",
-          "payload": {"button": "3"},
-          "label": "White"
-        },
-        "color": "default"
-      },
-     {
-        "action": {
-          "type": "text",
-          "payload": {"button": "4"},
-          "label": "Blue"
-        },
-        "color": "primary"
       }]
-    ]
   } """
 
 def getRandomPrediction():
