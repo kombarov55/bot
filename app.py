@@ -15,15 +15,24 @@ def getRandomPrediction():
 
 def getPrediction(userId):
     now = dt.now()
+
+    isFirstMessage = userId in userId_to_lastUpdateTime
     
-    if userId in userId_to_lastUpdateTime and userId_to_lastUpdateTime[userId].day == now.day:
-        return userId_to_prediction[userId]
-    else:
+    if isFirstMessage:
+        userId_to_lastUpdateTime[userId] = now
+        userId_to_prediction[userId] = getRandomPrediction()
+        return 'Добрый день, путник! Напиши "Предсказание", и я скажу тебе предсказание на грядущий день!'
+
+    didNotUpdatePredictionToday = userId_to_lastUpdateTime[userId].day != now.day:
+    if didNotUpdatePredictionToday:
         prediction = getRandomPrediction()
-        
         userId_to_lastUpdateTime[userId] = now
         userId_to_prediction[userId] = prediction
         return prediction
+    else:
+        return userId_to_prediction[userId]
+
+
 
 @app.route('/')
 def hello_world():
