@@ -9,7 +9,7 @@ app = Flask(__name__)
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
-keyboard = """keyboard: {"one_time": false, "buttons": [{"action": {"type": "text", "label": "Red"}, "color": "negative"}]} """
+keyboard = """{"one_time": false, "buttons": [{"action": {"type": "text", "label": "Red"}, "color": "negative"}]} """
 
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
