@@ -29,8 +29,8 @@ keyboard = {
     }
     ]
 }
-keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
-keyboard = str(keyboard.decode('utf-8'))
+keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-7')
+keyboard = str(keyboard.decode('utf-7'))
 
 
 def getRandomPrediction():
