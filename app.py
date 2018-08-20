@@ -15,7 +15,7 @@ keyboard = {
         'action': {
             'type': 'text',
             'payload': json.dumps({'buttons': '1'}),
-            'label': 'Предыдущая',
+            'label': 'prev',
         },
         'color': 'negative'
     },
