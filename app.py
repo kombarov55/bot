@@ -11,6 +11,7 @@ userId_to_prediction = {}
 
 keyboard = '{"one_time": false, "buttons": [{"action": {"type": "text", "label": "Red"}, "color": "negative"}]}'
 
+
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
     return predictions[randIndex]
