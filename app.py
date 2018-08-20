@@ -71,7 +71,7 @@ def processing():
         return confirmationToken
     elif data['type'] == 'message_new':
         session = vk.Session()
-        api = vk.API(session, v=5.0)
+        api = vk.API(session, v=5.60)
         userId = data['object']['user_id']
         text = data["object"]["body"]
 
