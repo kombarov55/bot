@@ -9,6 +9,45 @@ app = Flask(__name__)
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
+keyboard = """keyboard:
+{
+    'one_time': false,
+    'buttons': [
+      [{
+        'action': {
+          'type': 'text',
+          'payload': '{\'button\': \'1\'}',
+          'label': 'Red'
+        },
+        'color': 'negative'
+      },
+     {
+        'action': {
+          'type': 'text',
+          'payload': '{\'button\': \'2\'}',
+          'label': 'Green'
+        },
+        'color': 'positive'
+      }],
+      [{
+        'action': {
+          'type': 'text',
+          'payload': '{\'button\': \'3\'}',
+          'label': 'White'
+        },
+        'color': 'default'
+      },
+     {
+        'action': {
+          'type': 'text',
+          'payload': '{\'button\': \'4\'}',
+          'label': 'Blue'
+        },
+        'color': 'primary'
+      }]
+    ]
+  } """
+
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
     return predictions[randIndex]
@@ -23,7 +62,7 @@ def getPrediction(userId):
         userId_to_prediction[userId] = getRandomPrediction()
         return 'Добрый день, путник! Напиши "Предсказание", и я скажу тебе предсказание на грядущий день!'
 
-    didNotUpdatePredictionToday = userId_to_lastUpdateTime[userId].day != now.day:
+    didNotUpdatePredictionToday = userId_to_lastUpdateTime[userId].day != now.day
     if didNotUpdatePredictionToday:
         prediction = getRandomPrediction()
         userId_to_lastUpdateTime[userId] = now
@@ -52,7 +91,7 @@ def processing():
         text = data["object"]["body"]
 
         result = getPrediction(userId)
-        api.messages.send(access_token=token, user_id=str(userId), message=result)
+        api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard)
         
         return 'ok'
 
