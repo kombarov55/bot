@@ -75,9 +75,8 @@ def processing():
         userId = data['object']['user_id']
         text = data["object"]["body"]
 
+        session.method("messages.send", {"user_id": userId, "message": text})
 
-        api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard)
-        
         return 'ok'
 
 predictions = [
