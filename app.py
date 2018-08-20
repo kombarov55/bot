@@ -1,5 +1,5 @@
 #coding: utf-8
-from flask import Flask
+from flask import Flask, request, json
 from datetime import datetime as dt
 from random import randint
 app = Flask(__name__)
