@@ -184,9 +184,13 @@ def sendKeyboardMessage(userId, text, options):
     keyboard = OrderedDict()
     keyboard["one_time"] = True
     keyboard["buttons"] = buttons
-    keyboard = json.dumps(keyboard)
 
-    print("<<<<<<<<<<<<<<<keyboard<<<<<<<<<<<<")
+    print("<<<<<<<<<<<<<<<keyboard_dict<<<<<<<<<<<<")
+    print(keyboard)
+
+        keyboard = json.dumps(keyboard)
+
+    print("<<<<<<<<<<<<<<<keyboard_json<<<<<<<<<<<<")
     print(keyboard)
 
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
