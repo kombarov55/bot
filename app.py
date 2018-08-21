@@ -16,7 +16,8 @@ prediction = "Предсказание"
 
 keyboard = {
     'one_time': False,
-    'buttons': [
+    'buttons':
+    [
         [{
             'action': {
                 'type': 'text',
@@ -31,7 +32,7 @@ keyboard = {
             },
             'color': 'primary'
         }]
-    ]]
+    ]
 }
 keyboard = json.dumps(keyboard, ensure_ascii=False)
 
