@@ -78,7 +78,7 @@ def processing():
 
         print(userId)
 
-        api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard)
+        api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
         
         return 'ok'
 
