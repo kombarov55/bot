@@ -107,9 +107,8 @@ def processing():
         elif isFirstMessage(userId) and text == "Prediction":
             sendKeyboardMessage(userId, "Скажи, чего ты хочешь", ["Предсказание", "Подписаться на ежедневные предсказания в 10 утра"])
         else: 
-            
-        api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
-        
+            api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
+
         return 'ok'
 
 predictions = [
