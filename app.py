@@ -11,22 +11,23 @@ userId_to_prediction = {}
 
 keyboard = {
     'one_time': False,
-    'buttons': [{
-        'action': {
-            'type': 'text',
-            'payload': json.dumps({'buttons': '1'}),
-            'label': 'prev',
+    'buttons': [
+        {
+            'action': {
+                'type': 'text',
+                'payload': json.dumps({'buttons': '1'}),
+                'label': 'prev',
+            },
+            'color': 'negative'
         },
-        'color': 'negative'
-    },
-    {
-        'action': {
-            'type': 'text',
-            'payload': json.dumps({'buttons': '2'}),
-            'label': 'Pred',
-        },
-        'color': 'primary'
-    }
+        {
+            'action': {
+                'type': 'text',
+                'payload': json.dumps({'buttons': '2'}),
+                'label': 'Pred',
+            },
+            'color': 'primary'
+        }
     ]
 }
 keyboard = json.dumps(keyboard, ensure_ascii=False)
@@ -55,6 +56,7 @@ def getPrediction(userId):
         return userId_to_prediction[userId]
 
 
+#33167934
 
 @app.route('/')
 def hello_world():
@@ -69,12 +71,11 @@ def processing():
         return confirmationToken
     elif data['type'] == 'message_new':
         session = vk.Session()
-        api = vk.API(session, v=5.60)
+        api = vk.API(session, v=5.80)
         userId = data['object']['user_id']
         text = data["object"]["body"]
 
         print(userId)
-
 
         api.messages.send(access_token=token, user_id=str(userId), message=keyboard)
         
