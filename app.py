@@ -3,6 +3,7 @@ from flask import Flask, request, json, Response
 from datetime import datetime as dt
 from random import randint
 import vk
+import sys
 
 '''
 зашёл в чат:
@@ -163,7 +164,7 @@ def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
 def sendTextMessage(userId, text): 
-    api.messages.send(access_token = token, user_id=userId, message=text)
+    api.messages.send(access_token = token, user_id=userId, message=text, random_id = randint(0, sys.maxint))
 
 def sendKeyboardMessage(userId, text, options):
     buttons = []
@@ -179,7 +180,7 @@ def hello_world():
 
 @app.route('/', methods=['POST'])
 def processing():
-    data = json.loads(request.data)
+    data = jsonn.loads(request.data)
     
     userId = data['object']['peer_id']
     text = data["object"]["text"]
@@ -188,9 +189,10 @@ def processing():
     #nextStage = processInput(currentStage, text)
     #updateStage(userId, currentStage)
     #displayStage(userId, currentStage)
-
     
     sendTextMessage(userId, text)
+
+    
 
     return Response(status=200)
 
