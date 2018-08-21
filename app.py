@@ -6,6 +6,10 @@ import vk
 import sys
 from collections import OrderedDict
 
+import sys
+
+print(sys.version)
+
 '''
 зашёл в чат:
 Спрашиваем, хочет ли предсказание
