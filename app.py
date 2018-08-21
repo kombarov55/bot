@@ -6,8 +6,12 @@ import vk
 
 app = Flask(__name__)
 
+session = vk.Session()
+api = vk.API(session, v=5.80)
+
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
+
 
 keyboard = {
     'one_time': False,
@@ -55,8 +59,25 @@ def getPrediction(userId):
     else:
         return userId_to_prediction[userId]
 
+'''
+зашёл в чат:
+Спрашиваем, хочет ли предсказание
 
-#33167934
+Написал в 1 раз: 
+  зависит от ответа. Далее либо прощание, либо "отлично, начнём". и клавиатура
+
+Далее будет приходить только ответы с клавиатуры. 
+Выбор: 
+  1. Получить предсказание сейчас
+  2. Подписаться на рассылку (?можно потом добавить выбор времени) / отписаться от рассылки
+? 3. Задать вопрос (Возможно, тогда может какая нибудь пересылка)
+
+'''
+
+def isFirstMessage(userId):
+    return userId not in userId_to_lastUpdateTime
+
+myId=33167934
 
 @app.route('/')
 def hello_world():
@@ -70,13 +91,10 @@ def processing():
     if data['type'] == 'confirmation':
         return confirmationToken
     elif data['type'] == 'message_new':
+        
         print(data)
-        session = vk.Session()
-        api = vk.API(session, v=5.80)
         userId = data['object']['peer_id']
         text = data["object"]["text"]
-
-        print(userId)
 
         api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
         
