@@ -188,7 +188,7 @@ def sendKeyboardMessage(userId, text, options):
     print("<<<<<<<<<<<<<<<keyboard_dict<<<<<<<<<<<<")
     print(keyboard)
 
-        keyboard = json.dumps(keyboard)
+    keyboard = json.dumps(keyboard)
 
     print("<<<<<<<<<<<<<<<keyboard_json<<<<<<<<<<<<")
     print(keyboard)
