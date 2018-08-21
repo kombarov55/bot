@@ -48,7 +48,7 @@ def getPrediction(userId):
     if isFirstMessage:
         userId_to_lastUpdateTime[userId] = now
         userId_to_prediction[userId] = getRandomPrediction()
-        return 'Добрый день, путник! Напиши "Предсказание", и я скажу тебе предсказание на грядущий день!'
+        return 
 
     didNotUpdatePredictionToday = userId_to_lastUpdateTime[userId].day != now.day
     if didNotUpdatePredictionToday:
@@ -77,6 +77,14 @@ def getPrediction(userId):
 def isFirstMessage(userId):
     return userId not in userId_to_lastUpdateTime
 
+def sendTextMessage(userId, text): 
+    api.messages.send(access_token = token, user_id=userId, message=text)
+
+def sendKeyboardMessage(userId, text, options):
+    buttons = list(map(lambda text: {"action": {"type": "text", "label": text}, "color": "primary"}, options))
+    keyboard = {"oneTime": False, "buttons": buttons}
+    api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
+
 myId=33167934
 
 @app.route('/')
@@ -91,11 +99,15 @@ def processing():
     if data['type'] == 'confirmation':
         return confirmationToken
     elif data['type'] == 'message_new':
-        
-        print(data)
         userId = data['object']['peer_id']
         text = data["object"]["text"]
 
+        if isFirstMessage(userId) and text != "Prediction": 
+            sendTextMessage(userId, 'Здравствуй, путник! Напиши "Prediction", и я скажу тебе предсказание на грядущий день!')
+        elif isFirstMessage(userId) and text == "Prediction":
+            sendKeyboardMessage(userId, "Скажи, чего ты хочешь", ["Предсказание", "Подписаться на ежедневные предсказания в 10 утра"])
+        else: 
+            
         api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
         
         return 'ok'
