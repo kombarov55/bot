@@ -164,7 +164,7 @@ def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
 def sendTextMessage(userId, text): 
-    api.messages.send(access_token = token, user_id=userId, message=text, random_id = str(randint(0, 999999)))
+    api.messages.send(access_token=token, user_id=userId, message=text)
 
 def sendKeyboardMessage(userId, text, options):
     buttons = []
@@ -181,22 +181,23 @@ def hello_world():
 @app.route('/', methods=['POST'])
 def processing():
     data = json.loads(request.data)
-    
-    userId = data['object']['peer_id']
-    text = data["object"]["text"]
-    
-    #currentStage = getStage(userId)
-    #nextStage = processInput(currentStage, text)
-    #updateStage(userId, currentStage)
-    #displayStage(userId, currentStage)
-    
-    sendTextMessage(userId, text)
+    if 'type' not in data.keys():
+        return 'not vk'
+    if data['type'] == 'confirmation':
+        return confirmation_token
+    elif data['type'] == 'message_new':
+        userId = data['object']['peer_id']
+        text = data["object"]["text"]
 
-    
+        #currentStage = getStage(userId)
+        #nextStage = processInput(currentStage, text)
+        #updateStage(userId, currentStage)
+        #displayStage(userId, currentStage)
 
-    return Response(status=200)
+        sendTextMessage(userId, text)
+        return Response(status=200)
 
-predictions = [
+    predictions = [
     "Романтика создаст для вас новое направление",
     "С этого момента ваша ответственность принесет вам удачу"
     "Сегодня у вас будет эмоциональный день",
