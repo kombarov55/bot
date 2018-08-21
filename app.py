@@ -164,7 +164,7 @@ def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
 def sendTextMessage(userId, text): 
-    api.messages.send(access_token = token, user_id=userId, message=text, random_id = randint(0, 999999))
+    api.messages.send(access_token = token, user_id=userId, message=text, random_id = str(randint(0, 999999)))
 
 def sendKeyboardMessage(userId, text, options):
     buttons = []
