@@ -170,7 +170,7 @@ def sendTextMessage(userId, text):
 def sendKeyboardMessage(userId, text, options):
     buttons = list(map(lambda x: [{"action": {"type": "text", "label": x["text"]}, "color": "default"}], options))
     keyboard = {"one_time": True, "buttons": buttons}
-    keyboard = json.loads(keyboard)
+    keyboard = json.dumps(keyboard)
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
     
 myId=33167934
