@@ -178,8 +178,8 @@ def sendKeyboardMessage(userId, text, options):
         button = OrderedDict()
         button["action"] = action
         button["color"] = "default"
-
-        buttons.append(list(button))
+        
+        buttons.append([button])
 
     keyboard = OrderedDict()
     keyboard["one_time"] = True
@@ -214,8 +214,8 @@ def processing():
             { "text": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра", "nextId": "Рассылка" }
         ]
 
-        #sendKeyboardMessage(userId, "Выбор", options)
-        sendTextMessage(userId, "asdf123123123")
+        sendKeyboardMessage(userId, "Выбор", options)
+        #sendTextMessage(userId, "asdf123123123")
         return Response(status=200)
 
     predictions = [
