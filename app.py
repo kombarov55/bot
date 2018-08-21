@@ -180,7 +180,7 @@ def hello_world():
 
 @app.route('/', methods=['POST'])
 def processing():
-    data = jsonn.loads(request.data)
+    data = json.loads(request.data)
     
     userId = data['object']['peer_id']
     text = data["object"]["text"]
