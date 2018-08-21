@@ -57,7 +57,7 @@ keyboard = {
         [{
             'action': {
                 'type': 'text',
-                'label': prediction,
+                'label': "prediction",
             },
             'color': 'default'
         }],
