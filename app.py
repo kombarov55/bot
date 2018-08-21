@@ -195,7 +195,12 @@ def processing():
         #updateStage(userId, currentStage)
         #displayStage(userId, currentStage)
 
-        sendKeyboardMessage(userId, "Выбор", ["a", "b"])
+        options = [
+            { "text": "Пожалуйста, скажи как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
+            { "text": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра", "nextId": "Рассылка" }
+        ]
+
+        sendKeyboardMessage(userId, "Выбор", options)
         return Response(status=200)
 
     predictions = [
