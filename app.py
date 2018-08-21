@@ -1,5 +1,5 @@
 #coding: utf-8
-from flask import Flask, request, json
+from flask import Flask, request, json, Response
 from datetime import datetime as dt
 from random import randint
 import vk
@@ -192,7 +192,7 @@ def processing():
     
     sendTextMessage(userId, text)
 
-    return "ok"
+    return Response(status=200)
 
 predictions = [
     "Романтика создаст для вас новое направление",
