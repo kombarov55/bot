@@ -4,6 +4,44 @@ from datetime import datetime as dt
 from random import randint
 import vk
 
+'''
+зашёл в чат:
+Спрашиваем, хочет ли предсказание
+
+Написал в 1 раз: 
+  зависит от ответа. Далее либо прощание, либо "отлично, начнём". и клавиатура
+
+Далее будет приходить только ответы с клавиатуры. 
+Выбор: 
+  1. Получить предсказание сейчас
+  2. Подписаться на рассылку (?можно потом добавить выбор времени) / отписаться от рассылки
+? 3. Задать вопрос (Возможно, тогда может какая нибудь пересылка)
+
+Что связано с юзером?
+  На какой стадии
+  Когда обновлялось ему предсказание
+
+Что есть у стадии: 
+  id
+  текст
+  Варианты ответа
+
+Хранится база, в которой лежат userId -> UserData
+Хранятся стейджи в массиве. 
+
+====================
+
+Получить userid
+Есть в userdata? 
+  Завести запись на 0 stage
+получить стейдж 
+обработать ввод: 
+  поменять при необходимости
+  если ошибка - создать отдельный стейдж с текстом ошибки и ответами из предыдущего
+отобразить его 
+
+'''
+
 app = Flask(__name__)
 
 session = vk.Session()
@@ -12,10 +50,8 @@ api = vk.API(session, v=5.80)
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
-prediction = "Предсказание"
-
 keyboard = {
-    'one_time': False,
+    'one_time': True,
     'buttons':
     [
         [{
@@ -39,7 +75,7 @@ keyboard = json.dumps(keyboard, ensure_ascii=False)
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
     return predictions[randIndex]
-
+    
 def getPrediction(userId):
     now = dt.now()
 
@@ -58,28 +94,83 @@ def getPrediction(userId):
         return prediction
     else:
         return userId_to_prediction[userId]
+    
+#{userid -> {stageId: String, lastUpdateTime: Date}}
+db = {}
 
-'''
-зашёл в чат:
-Спрашиваем, хочет ли предсказание
+def getStage(userId):
+    if userId in db: 
+        stageId = db[userId][stage]
+        return findStageById(stageId)
+    else:
+        stageId = "Первое сообщение"
+        db[userId] = {"stageId": stageId}
+        return findStageById(stageId)
 
-Написал в 1 раз: 
-  зависит от ответа. Далее либо прощание, либо "отлично, начнём". и клавиатура
+def updateStage(userId, stage):
+    db[userId]["stageId"] = stage
 
-Далее будет приходить только ответы с клавиатуры. 
-Выбор: 
-  1. Получить предсказание сейчас
-  2. Подписаться на рассылку (?можно потом добавить выбор времени) / отписаться от рассылки
-? 3. Задать вопрос (Возможно, тогда может какая нибудь пересылка)
+def displayStage(userId, stage):
+    message = stage["text"]
+    options = list(map(lambda x: x["text"], stage["options"]))
+    sendKeyboardMessage(userId, message, options)
 
-'''
 
-def isFirstMessage(userId):
-    return userId not in userId_to_lastUpdateTime
+stages = [
+    {
+        "id": "Первое сообщение",
+        "text": "Здравствуй, путник! Зачем ты пришёл к нам?",
+        "options": [
+            { "text": "Получить предсказание", "nextId": "Подтверждение предсказания"},
+            { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
+            { "text": "Ничего, просто смотрю", "nextId": "Прощание" }
+        ]
+    },
+    {
+        "id": "Подтверждение предсказания",
+        "text": "Отлично. Ты готов к тому чтобы узнать о завтрашнем дне?",
+        "options": [
+            { "text": "Глаголь ;)", "nextId": "Предсказание" },
+            { "text": "Нет, спасибо.", "nextId": "Прощание" },
+            { "text": "Ещё чего. Я сам творю свою судьбу.", "nextId": "Прощание" }
+        ]
+        
+    },
+    {
+        "id": "Предсказание",
+        "text": "Отлично. Это твой выбор. А теперь скажи, чего тебе хочется!",
+        "options": [
+            { "text": "Пожалуйста, скажи как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
+            { "text": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра", "nextId": "Рассылка" }
+        ]
+    },
+    {
+        "id": "Результат предсказания"
+    },
+    {
+        "id": "Рассылка"
+    },
+    {
+        "id": "Прощание",
+        "text": "Чтож, это твой выбор. Удачи на твоём пути! Если передумаешь - скажи ;)",
+        "options": [
+            { "text": "Прости, я поспешил. Впрочем, предсказание на сегодня мне бы не помешало. ", "nextId": "Предсказание" }
+        ]
+    } 
+]
+
+def findStageById(id):
+    return list(filter(lambda x: x["id"] == id, stages))[0]
 
 def sendTextMessage(userId, text): 
     api.messages.send(access_token = token, user_id=userId, message=text)
 
+def sendKeyboardMessage(userId, text, options):
+    buttons = []
+    keyboard = {}
+    keyboard = json.loads(keyboard)
+    api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
+    
 myId=33167934
 
 @app.route('/')
@@ -89,21 +180,19 @@ def hello_world():
 @app.route('/', methods=['POST'])
 def processing():
     data = json.loads(request.data)
-    if 'type' not in data.keys():
-        return 'not vk'
-    if data['type'] == 'confirmation':
-        return confirmationToken
-    elif data['type'] == 'message_new':
-        userId = data['object']['peer_id']
-        text = data["object"]["text"]
+    
+    userId = data['object']['peer_id']
+    text = data["object"]["text"]
+    
+    #currentStage = getStage(userId)
+    #nextStage = processInput(currentStage, text)
+    #updateStage(userId, currentStage)
+    #displayStage(userId, currentStage)
 
-        if isFirstMessage(userId) and text != "Prediction": 
-            sendTextMessage(userId, "Здравствуй, путник! Напиши " + prediction + ", и я скажу тебе предсказание на грядущий день!")
-        elif isFirstMessage(userId) and text == prediction:
-            api.messages.send(access_token = token, user_id = userId, keyboard = keyboard, message = "Скажи, чего ты хочешь")
-        elif not isFirstMessage(userId) and text != prediction: 
-            api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
-        return 'ok'
+    
+    sendTextMessage(userId, text)
+
+    return "ok"
 
 predictions = [
     "Романтика создаст для вас новое направление",
