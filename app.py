@@ -12,24 +12,25 @@ api = vk.API(session, v=5.80)
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
+prediction = "Предсказание"
 
 keyboard = {
     'one_time': False,
-    'buttons': [[
-        {
+    'buttons': [
+        [{
             'action': {
                 'type': 'text',
-                'label': 'Предсказание',
+                'label': prediction,
             },
-            'color': 'negative'
-        },
-        {
+            'color': 'default'
+        }],
+        [{
             'action': {
                 'type': 'text',
                 'label': 'Подписаться на предсказания',
             },
             'color': 'primary'
-        }
+        }]
     ]]
 }
 keyboard = json.dumps(keyboard, ensure_ascii=False)
@@ -78,11 +79,6 @@ def isFirstMessage(userId):
 def sendTextMessage(userId, text): 
     api.messages.send(access_token = token, user_id=userId, message=text)
 
-def sendKeyboardMessage(userId, text, options):
-    #buttons = list(map(lambda text: {"action": {"type": "text", "label": text}, "color": "primary"}, options))
-    #keyboard = json.dumps({"oneTime": False, "buttons": [buttons]})
-    api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
-
 myId=33167934
 
 @app.route('/')
@@ -101,10 +97,10 @@ def processing():
         text = data["object"]["text"]
 
         if isFirstMessage(userId) and text != "Prediction": 
-            sendTextMessage(userId, 'Здравствуй, путник! Напиши "Prediction", и я скажу тебе предсказание на грядущий день!')
+            sendTextMessage(userId, "Здравствуй, путник! Напиши " + prediction + ", и я скажу тебе предсказание на грядущий день!")
         elif isFirstMessage(userId) and text == "Prediction":
-            sendKeyboardMessage(userId, "Скажи, чего ты хочешь", ["prediction", "subscribe"])
-        else: 
+            api.messages.send(access_token = token, user_id = userId, keyboard = keyboard, message = "Скажи, чего ты хочешь")
+        else !isFirstMessage(userId) and text != : 
             api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
 
         return 'ok'
