@@ -168,8 +168,21 @@ def sendTextMessage(userId, text):
     api.messages.send(access_token=token, user_id=userId, message=text)
 
 def sendKeyboardMessage(userId, text, options):
-    buttons = list(map(lambda x: [OrderedDict({"action": {"type": "text", "label": x["text"]}, "color": "default"})], options))
-    keyboard = OrderedDict({"one_time": True})
+
+    buttons = []
+    for option in options:
+        action = OrderedDict()
+        action["type"] = "text"
+        action["label"] = option["text"]
+
+        button = OrderedDict()
+        button["action"] = action
+        button["color"] = "default"
+
+        buttons.append(button)
+
+    keyboard = OrderedDict()
+    keyboard["one_time"] = True
     keyboard["buttons"] = buttons
     keyboard = json.dumps(keyboard)
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
