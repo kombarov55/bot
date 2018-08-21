@@ -99,11 +99,10 @@ def processing():
 
         if isFirstMessage(userId) and text != "Prediction": 
             sendTextMessage(userId, "Здравствуй, путник! Напиши " + prediction + ", и я скажу тебе предсказание на грядущий день!")
-        elif isFirstMessage(userId) and text == "Prediction":
+        elif isFirstMessage(userId) and text == prediction:
             api.messages.send(access_token = token, user_id = userId, keyboard = keyboard, message = "Скажи, чего ты хочешь")
-        else !isFirstMessage(userId) and text != : 
+        elif not isFirstMessage(userId) and text != prediction: 
             api.messages.send(access_token=token, user_id=str(userId), keyboard=keyboard, message="empty")
-
         return 'ok'
 
 predictions = [
