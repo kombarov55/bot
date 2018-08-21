@@ -74,7 +74,7 @@ def processing():
         session = vk.Session()
         api = vk.API(session, v=5.80)
         userId = data['object']['peer_id']
-        text = data["object"]["body"]
+        text = data["object"]["text"]
 
         print(userId)
 
