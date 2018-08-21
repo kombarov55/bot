@@ -19,16 +19,14 @@ keyboard = {
         {
             'action': {
                 'type': 'text',
-                'payload': json.dumps({'buttons': '1'}),
-                'label': 'prev',
+                'label': 'Предсказание',
             },
             'color': 'negative'
         },
         {
             'action': {
                 'type': 'text',
-                'payload': json.dumps({'buttons': '2'}),
-                'label': 'Pred',
+                'label': 'Подписаться на предсказания',
             },
             'color': 'primary'
         }
@@ -81,8 +79,8 @@ def sendTextMessage(userId, text):
     api.messages.send(access_token = token, user_id=userId, message=text)
 
 def sendKeyboardMessage(userId, text, options):
-    buttons = list(map(lambda text: {"action": {"type": "text", "label": text}, "color": "primary"}, options))
-    keyboard = json.dumps({"oneTime": False, "buttons": [buttons]})
+    #buttons = list(map(lambda text: {"action": {"type": "text", "label": text}, "color": "primary"}, options))
+    #keyboard = json.dumps({"oneTime": False, "buttons": [buttons]})
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
 
 myId=33167934
