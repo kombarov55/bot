@@ -4,6 +4,7 @@ from datetime import datetime as dt
 from random import randint
 import vk
 import sys
+from collections import OrderedDict
 
 '''
 зашёл в чат:
@@ -167,8 +168,8 @@ def sendTextMessage(userId, text):
     api.messages.send(access_token=token, user_id=userId, message=text)
 
 def sendKeyboardMessage(userId, text, options):
-    buttons = []
-    keyboard = {}
+    buttons = list(map(lambda x: [{"action": {"type": "text", "label": x["text"]}, "color": "default"}], options))
+    keyboard = {"one_time": True, "buttons": buttons}
     keyboard = json.loads(keyboard)
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
     
@@ -194,7 +195,7 @@ def processing():
         #updateStage(userId, currentStage)
         #displayStage(userId, currentStage)
 
-        sendTextMessage(userId, text)
+        sendKeyboardMessage(userId, "Выбор", ["a", "b"])
         return Response(status=200)
 
     predictions = [
