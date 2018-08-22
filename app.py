@@ -172,7 +172,7 @@ def sendKeyboardMessage(userId, text, options):
     print("====================JSON_KEYBOARD====================")
     print(keyboard_json)
 
-    api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard_json)
+    api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
     
 myId=33167934
 
