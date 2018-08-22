@@ -162,6 +162,7 @@ def optionsToKeyboard(options):
     buttons = list(map(lambda option: [{"color": "default", "action": {"type": "text", "label": option["text"]}}], options))
     keyboard = {"one_time": True, "buttons": buttons}
     keyboard = json.dumps(keyboard)
+    keyboard.encode("utf-8")
     return keyboard
 
 def sendKeyboardMessage(userId, text, options):
