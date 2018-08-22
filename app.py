@@ -70,7 +70,7 @@ keyboard_json = {
         [{
             'color': 'default',
             'action': {
-                'label': "Хочу задать вопрос",
+                'label': "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра",
                 'type': 'text'
             }
         }]
@@ -178,7 +178,7 @@ def optionsToKeyboard(options):
     return keyboard
 
 def sendKeyboardMessage(userId, text, options):
-    keyboard = optionsToKeyboard(options)
+    optionsToKeyboard(options)
     print("====================MY_KEYBOARD====================")
     print(keyboard)
     print("====================JSON_KEYBOARD====================")
