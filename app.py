@@ -62,7 +62,7 @@ keyboard_json = {
         [{
             'color': 'default',
             'action': {
-                'label': "Получить предсказание",
+                'label': "Пожалуйста, скажи как пройдёт сегодняшний день",
                 'type': 'text'
 
             }
