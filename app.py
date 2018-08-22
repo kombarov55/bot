@@ -62,59 +62,20 @@ keyboard_json = {
     [
         [
             {
-                'color': 'default',
                 'action': {
                     'type': 'text',
                     'label': "Пожалуйста, скажи как пройдёт сегодняшний день"
-                }
+                },
+                'color': 'default'
             }
         ],
         [
             {
-                'color': 'default',
                 'action': {
                     'type': 'text',
                     'label': "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра"
-                }
-            }
-        ]
-    ]
-}
-
-keyboard_json = {
-    "one_time": False,
-    "buttons":
-    [
-        [
-            {
-                "action":{
-                    "type":"text",
-                    "label":"Red"
                 },
-                "color":"negative"
-            },
-            {
-                "action":{
-                    "type":"text",
-                    "label":"Green"
-                },
-                "color":"positive"
-            }
-        ],
-        [
-            {
-                "action":{
-                    "type":"text",
-                    "label":"White"
-                },
-                "color":"default"
-            },
-            {
-                "action":{
-                    "type":"text",
-                    "label":"Blue"
-                },
-                "color":"primary"
+                'color': 'default'
             }
         ]
     ]
