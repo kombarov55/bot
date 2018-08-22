@@ -57,78 +57,36 @@ userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
 keyboard_json = {
-    'one_time': True,
-    'buttons':
-    [
-        [
-            {
-                'action': {
-                    'type': 'text',
-                    'label': "Пожалуйста, скажи как пройдёт сегодняшний день"
-                },
-                'color': 'default'
-            }
-        ],
-        [
-            {
-                'action': {
-                    'type': 'text',
-                    'label': "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра"
-                },
-                'color': 'default'
-            }
-        ]
-    ]
-}
-keyboard_json = {
-    "one_time": False,
+    "one_time": True,
     "buttons":
     [
         [
             {
                 "action":{
-                    "type":"text",
-                    "label":"Green"
+                    "type": "text",
+                    "label": "Пожалуйста, скажи как пройдёт сегодняшний день"
                 },
-                "color":"positive"
+                "color": "default"
             }
         ],
         [
             {
                 "action":{
-                    "type":"text",
-                    "label":"Blue"
+                    "type": "text",
+                    "label": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра"
                 },
-                "color":"primary"
+                "color": "default"
             }
         ]
     ]
 }
+
 
 keyboard_json = json.dumps(keyboard_json)
 
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
     return predictions[randIndex]
-
-def getPrediction(userId):
-    now = dt.now()
-
-    isFirstMessage = userId in userId_to_lastUpdateTime
-    
-    if isFirstMessage:
-        userId_to_lastUpdateTime[userId] = now
-        userId_to_prediction[userId] = getRandomPrediction()
-        return 
-
-    didNotUpdatePredictionToday = userId_to_lastUpdateTime[userId].day != now.day
-    if didNotUpdatePredictionToday:
-        prediction = getRandomPrediction()
-        userId_to_lastUpdateTime[userId] = now
-        userId_to_prediction[userId] = prediction
-        return prediction
-    else:
-        return userId_to_prediction[userId]
     
 #{userid -> {stageId: String, lastUpdateTime: Date}}
 db = {}
