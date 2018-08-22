@@ -56,7 +56,7 @@ api = vk.API(session, v=5.80)
 userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
-keyboard = {
+keyboard_json = {
     'buttons':
     [
         [{
@@ -77,7 +77,6 @@ keyboard = {
     ],
     'one_time': True
 }
-keyboard = json.dumps(keyboard, ensure_ascii=False)
 
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
@@ -177,6 +176,10 @@ def sendKeyboardMessage(userId, text, options):
     keyboard = {"one_time": True, "buttons": buttons}
     
     keyboard = json.dumps(keyboard)
+    print("====================MY_KEYBOARD====================")
+    print(keyboard)
+    print("====================JSON_KEYBOARD====================")
+    print(keyboard_json)
 
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
     
