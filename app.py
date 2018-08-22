@@ -196,13 +196,13 @@ def processing():
         #displayStage(userId, currentStage)
 
         options = [
-            { "text": "Пожалуйста, скажи как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
-            { "text": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра", "nextId": "Рассылка" }
+            { "text": "a", "nextId": "Результат предсказания" },
+            { "text": "b", "nextId": "Рассылка" }
         ]
 
-        #sendKeyboardMessage(userId, "Выбор", options) 
+        sendKeyboardMessage(userId, "c", options) 
         #sendTextMessage(userId, "asdf123123123")
-        api.messages.send(access_token = token, user_id = userId, message = "msg", keyboard = keyboard_json)
+        #api.messages.send(access_token = token, user_id = userId, message = "msg", keyboard = keyboard_json)
         
         
         return Response(status=200)
