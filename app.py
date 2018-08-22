@@ -81,6 +81,49 @@ keyboard_json = {
     ]
 }
 
+keyboard_json = {
+    "one_time": False,
+    "buttons":
+    [
+        [
+            {
+                "action":{
+                    "type":"text",
+                    "payload":"{\"button\": \"1\"}",
+                    "label":"Red"
+                },
+                "color":"negative"
+            },
+            {
+                "action":{
+                    "type":"text",
+                    "payload":"{\"button\": \"2\"}",
+                    "label":"Green"
+                },
+                "color":"positive"
+            }
+        ],
+        [
+            {
+                "action":{
+                    "type":"text",
+                    "payload":"{\"button\": \"3\"}",
+                    "label":"White"
+                },
+                "color":"default"
+            },
+            {
+                "action":{
+                    "type":"text",
+                    "payload":"{\"button\": \"4\"}",
+                    "label":"Blue"
+                },
+                "color":"primary"
+            }
+        ]
+    ]
+}
+
 keyboard_json = json.dumps(keyboard_json)
 
 def getRandomPrediction():
@@ -221,6 +264,7 @@ def processing():
         #sendKeyboardMessage(userId, "Выбор", options) 
         #sendTextMessage(userId, "asdf123123123")
         api.messages.send(access_token = token, user_id = userId, message = "msg", keyboard = keyboard_json)
+        
         
         return Response(status=200)
 
