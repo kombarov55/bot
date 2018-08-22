@@ -197,8 +197,8 @@ def processing():
         #displayStage(userId, currentStage)
 
         options = [
-            { "text": "a", "nextId": "Результат предсказания" },
-            { "text": "b", "nextId": "Рассылка" }
+            { "text": "фыва", "nextId": "Результат предсказания" },
+            { "text": "фывафыва", "nextId": "Рассылка" }
         ]
 
         sendKeyboardMessage(userId, "c", options) 
