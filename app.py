@@ -78,6 +78,8 @@ keyboard_json = {
     'one_time': True
 }
 
+keyboard_json = json.dumps(keyboard_json)
+
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
     return predictions[randIndex]
