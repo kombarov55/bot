@@ -64,7 +64,7 @@ keyboard_json = {
             {
                 "action":{
                     "type": "text",
-                    "label": "Пожалуйста, скажи как пройдёт сегодняшний день"
+                    "label": "blue"
                 },
                 "color": "default"
             }
@@ -73,7 +73,7 @@ keyboard_json = {
             {
                 "action":{
                     "type": "text",
-                    "label": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра"
+                    "label": "red"
                 },
                 "color": "default"
             }
