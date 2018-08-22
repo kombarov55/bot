@@ -68,7 +68,7 @@ keyboard = {
             }
         }],
         [{
-            'color': 'primary',
+            'color': 'default',
             'action': {
                 'label': 'Подписаться на предсказания',
                 'type': 'text'
@@ -173,30 +173,10 @@ def sendTextMessage(userId, text):
     api.messages.send(access_token=token, user_id=userId, message=text)
 
 def sendKeyboardMessage(userId, text, options):
-
-    buttons = []
-    for option in options:
-        action = OrderedDict()
-        action["type"] = "text"
-        action["label"] = option["text"]
-
-        button = OrderedDict()
-        button["action"] = action
-        button["color"] = "default"
-        
-        buttons.append([button])
-
-    keyboard = OrderedDict()
-    keyboard["one_time"] = True
-    keyboard["buttons"] = buttons
-
-    print("<<<<<<<<<<<<<<<keyboard_dict<<<<<<<<<<<<")
-    print(keyboard)
-
+    buttons = list(map(lambda option: [{"color": "default", "action": {"type": "text", "label": option["text"]}}], options))
+    keyboard = {"one_time": True, "buttons": buttons}
+    
     keyboard = json.dumps(keyboard)
-
-    print("<<<<<<<<<<<<<<<keyboard_json<<<<<<<<<<<<")
-    print(keyboard)
 
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
     
@@ -227,10 +207,9 @@ def processing():
             { "text": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра", "nextId": "Рассылка" }
         ]
 
-        #sendKeyboardMessage(userId, "Выбор", options) 
+        sendKeyboardMessage(userId, "Выбор", options) 
         #sendTextMessage(userId, "asdf123123123")
-
-        api.messages.send(access_token = token, user_id = userId, message = "msg", keyboard = keyboard)
+        #api.messages.send(access_token = token, user_id = userId, message = "msg", keyboard = keyboard)
         
         return Response(status=200)
 
