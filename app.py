@@ -89,7 +89,6 @@ keyboard_json = {
             {
                 "action":{
                     "type":"text",
-                    "payload":"{\"button\": \"1\"}",
                     "label":"Red"
                 },
                 "color":"negative"
@@ -97,7 +96,6 @@ keyboard_json = {
             {
                 "action":{
                     "type":"text",
-                    "payload":"{\"button\": \"2\"}",
                     "label":"Green"
                 },
                 "color":"positive"
@@ -107,7 +105,6 @@ keyboard_json = {
             {
                 "action":{
                     "type":"text",
-                    "payload":"{\"button\": \"3\"}",
                     "label":"White"
                 },
                 "color":"default"
@@ -115,7 +112,6 @@ keyboard_json = {
             {
                 "action":{
                     "type":"text",
-                    "payload":"{\"button\": \"4\"}",
                     "label":"Blue"
                 },
                 "color":"primary"
