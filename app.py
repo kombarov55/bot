@@ -62,7 +62,7 @@ keyboard_json = {
         [{
             'color': 'default',
             'action': {
-                'label': "prediction",
+                'label': "Получить предсказание",
                 'type': 'text'
 
             }
@@ -70,7 +70,7 @@ keyboard_json = {
         [{
             'color': 'default',
             'action': {
-                'label': 'Подписаться на предсказания',
+                'label': "Хочу задать вопрос",
                 'type': 'text'
             }
         }]
@@ -171,11 +171,14 @@ def findStageById(id):
 def sendTextMessage(userId, text): 
     api.messages.send(access_token=token, user_id=userId, message=text)
 
-def sendKeyboardMessage(userId, text, options):
+def optionsToKeyboard(options):
     buttons = list(map(lambda option: [{"color": "default", "action": {"type": "text", "label": option["text"]}}], options))
     keyboard = {"one_time": True, "buttons": buttons}
-    
     keyboard = json.dumps(keyboard)
+    return keyboard
+
+def sendKeyboardMessage(userId, text, options):
+    keyboard = optionsToKeyboard(options)
     print("====================MY_KEYBOARD====================")
     print(keyboard)
     print("====================JSON_KEYBOARD====================")
