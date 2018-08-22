@@ -57,24 +57,25 @@ userId_to_lastUpdateTime = {}
 userId_to_prediction = {}
 
 keyboard = {
-    'one_time': True,
     'buttons':
     [
         [{
+            'color': 'default',
             'action': {
-                'type': 'text',
                 'label': "prediction",
-            },
-            'color': 'default'
+                'type': 'text'
+
+            }
         }],
         [{
+            'color': 'primary',
             'action': {
-                'type': 'text',
                 'label': 'Подписаться на предсказания',
-            },
-            'color': 'primary'
+                'type': 'text'
+            }
         }]
-    ]
+    ],
+    'one_time': True
 }
 keyboard = json.dumps(keyboard, ensure_ascii=False)
 
