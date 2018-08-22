@@ -226,8 +226,11 @@ def processing():
             { "text": "Хочу чтобы ты отсылал мне предсказания каждый день в 9 утра", "nextId": "Рассылка" }
         ]
 
-        sendKeyboardMessage(userId, "Выбор", options)
+        #sendKeyboardMessage(userId, "Выбор", options) 
         #sendTextMessage(userId, "asdf123123123")
+
+        api.messages.send(access_token = token, user_id = userId, message = "msg", keyboard = keyboard)
+        
         return Response(status=200)
 
     predictions = [
