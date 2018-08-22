@@ -80,6 +80,30 @@ keyboard_json = {
         ]
     ]
 }
+keyboard_json = {
+    "one_time": False,
+    "buttons":
+    [
+        [
+            {
+                "action":{
+                    "type":"text",
+                    "label":"Green"
+                },
+                "color":"positive"
+            }
+        ],
+        [
+            {
+                "action":{
+                    "type":"text",
+                    "label":"Blue"
+                },
+                "color":"primary"
+            }
+        ]
+    ]
+}
 
 keyboard_json = json.dumps(keyboard_json)
 
