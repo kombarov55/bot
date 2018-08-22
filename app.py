@@ -178,7 +178,7 @@ def optionsToKeyboard(options):
     return keyboard
 
 def sendKeyboardMessage(userId, text, options):
-    optionsToKeyboard(options)
+    keyboard = optionsToKeyboard(options)
     print("====================MY_KEYBOARD====================")
     print(keyboard)
     print("====================JSON_KEYBOARD====================")
