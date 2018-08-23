@@ -2,7 +2,6 @@
 from flask import Flask, request, json, Response
 from datetime import datetime as dt
 from random import randint
-import vk
 import sys
 from collections import OrderedDict
 
