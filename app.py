@@ -14,7 +14,7 @@ app = Flask(__name__)
 def displayStage(userId, stage):
     message = stage["text"]
     options = list(map(lambda x: x["text"], stage["options"]))
-    sendKeyboardMessage(userId, message, options)
+    ApiGate.sendKeyboardMessage(userId, message, options)
 
 @app.route('/')
 def hello_world():
@@ -41,6 +41,6 @@ def processing():
             { "text": "фывафыва", "nextId": "Рассылка" }
         ]
 
-        sendKeyboardMessage(userId, "c", options) 
+        ApiGate.sendKeyboardMessage(userId, "c", options) 
         return Response(status=200)
 
