@@ -31,9 +31,9 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
 
-        currentStage = Stages.getStage(userId)
-        nextStage = Stages.processInput(currentStage, text)
-        Stages.updateStage(userId, currentStage)
+        currentStage = Stage.getStage(userId)
+        nextStage = Stage.processInput(currentStage, text)
+        Stage.updateUserToStage(userId, currentStage)
         displayStage(userId, currentStage)
         
         return Response(status=200)

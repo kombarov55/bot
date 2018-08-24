@@ -1,6 +1,6 @@
 #coding: utf-8
 
-def updateStage(userId, stage):
+def updateUserToStage(userId, stage):
     db[userId]["stageId"] = stage
 
 def findStageById(id):
@@ -14,6 +14,41 @@ def getStage(userId):
         stageId = "Первое сообщение"
         db[userId] = {"stageId": stageId}
         return findStageById(stageId)
+
+def processInput(currentStage, text):
+    '''
+    - по тексту найти stageId
+    - найден?
+      - найти следующий вариант по option.nextId=stage.id
+      - найден? 
+        - вернуть его 
+        - вернуть что не понял и тд
+    - вернуть что не понял и тд
+    '''
+    selectedOption = list(filter(lambda option: option["text"] == text, currentStage["options"]))
+    optionFound = len(selectedOption) == 1
+    if not optionFound:
+        errorStage = createErrorStage(currentStage, "хмм.... не понял. Можно ещё раз?")
+        
+        return errorStage
+    else:
+        option = selectedOption[0]
+        nextId = option["nextId"]
+        selectedStage = list(filter(lambda stage: stage["id"] == nextId, stages))
+        stageFound = len(selectedStage) == 1
+        if not stageFound:
+            errorStage = createErrorStage(currentStage, "не найден stage с id=" + nextId)
+
+            return errorStage
+        else:
+            selectedStage = selectedStage[0]
+
+            return selectedStage
+
+def createErrorStage(currentStage, errorText): 
+        stageWithErrorText = currentStage.copy()
+        stageWithErrorText["text"] = errorText
+        return stageWithErrorText
 
 stages = [
     {
