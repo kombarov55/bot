@@ -30,11 +30,12 @@ def processing():
     elif data['type'] == 'message_new':
         userId = data['object']['peer_id']
         text = data["object"]["text"]
-
+        
         currentStage = Stage.getStage(userId)
-        nextStage = Stage.processInput(currentStage, text)
-        Stage.updateUserToStage(userId, currentStage)
-        displayStage(userId, currentStage)
+        ApiGate.sendTextMessage(userId, json.dumps(currentStage))
+        #nextStage = Stage.processInput(currentStage, text) 
+        #Stage.updateUserToStage(userId, currentStage)
+        #displayStage(userId, currentStage)
         
         return Response(status=200)
 
