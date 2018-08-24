@@ -1,19 +1,21 @@
 #coding: utf-8
 
-def updateStage(userId, stage):
-    db[userId]["stageId"] = stage
-
-def findStageById(id):
-    return list(filter(lambda x: x["id"] == id, stages))[0]
-
 def getStage(userId):
     if userId in db: 
-        stageId = db[userId][stage]
+        stageId = db[userId]["stageId"]
         return findStageById(stageId)
     else:
         stageId = "Первое сообщение"
         db[userId] = {"stageId": stageId}
         return findStageById(stageId)
+
+def processInput(currentStage, text):
+    
+def updateStage(userId, stage):
+    db[userId]["stageId"] = stage
+
+def findStageById(id):
+    return list(filter(lambda x: x["id"] == id, stages))[0]
 
 stages = [
     {

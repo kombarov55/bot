@@ -8,7 +8,7 @@ def findStageById(id):
 
 def getStage(userId):
     if userId in db: 
-        stageId = db[userId][stageId]
+        stageId = db[userId]["stageId"]
         return findStageById(stageId)
     else:
         stageId = "Первое сообщение"
