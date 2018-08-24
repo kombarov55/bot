@@ -5,9 +5,9 @@ from random import randint
 import sys
 from collections import OrderedDict
 
-import predictions
+import Predictions
 import ApiGate
-import stages
+import Stage
 
 app = Flask(__name__)
 
@@ -31,16 +31,10 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
 
-        #currentStage = getStage(userId)
-        #nextStage = processInput(currentStage, text)
-        #updateStage(userId, currentStage)
-        #displayStage(userId, currentStage)
-
-        options = [
-            { "text": "фыва", "nextId": "Результат предсказания" },
-            { "text": "фывафыва", "nextId": "Рассылка" }
-        ]
-
-        ApiGate.sendKeyboardMessage(userId, "c", options) 
+        currentStage = getStage(userId)
+        nextStage = processInput(currentStage, text)
+        updateStage(userId, currentStage)
+        displayStage(userId, currentStage)
+        
         return Response(status=200)
 
