@@ -11,7 +11,7 @@ def sendTextMessage(userId, text):
     api.messages.send(access_token=token, user_id=userId, message=text)
 
 def optionsToKeyboard(options):
-    buttons = list(map(lambda option: [{"color": "default", "action": {"type": "text", "label": option["text"]}}], options))
+    buttons = list(map(lambda option: [{"color": "default", "action": {"type": "text", "label": option[0]["text"]}}], options))
     keyboard = {"one_time": True, "buttons": buttons}
     keyboard = json.dumps(keyboard).encode("utf-8")
     return keyboard
