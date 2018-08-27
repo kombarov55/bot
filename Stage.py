@@ -28,7 +28,7 @@ def findOption(stage, text):
         return options[0]
 
 def updateUserToStage(userId, stage):
-    db[userId] = stage
+    db[userId]["stageId"] = stage
     
         
 
