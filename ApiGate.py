@@ -20,6 +20,14 @@ def sendKeyboardMessage(userId, text, options):
     keyboard = optionsToKeyboard(options)
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
 
+def optionsToButtons(options):
+    textList = list(map(lambda option: option[0]["text"], options))
+    buttons = list(map(lambda text: [{
+        "color": "default",
+        "action": {"type": "text", "label": text}
+    }], textList))
+    return buttons
+
 keyboard_json = {
     "one_time": True,
     "buttons":

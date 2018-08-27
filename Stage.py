@@ -1,54 +1,36 @@
-#coding: utf-8
-
-def updateUserToStage(userId, stage):
-    db[userId]["stageId"] = stage
-
-def findStageById(id):
-    return list(filter(lambda x: x["id"] == id, stages))[0]
+ #coding: utf-8
 
 def getStage(userId):
     if userId in db: 
         stageId = db[userId]["stageId"]
         return findStageById(stageId)
     else:
-        stageId = "Первое сообщение"
-        db[userId] = {"stageId": stageId}
-        return findStageById(stageId)
+        return stages[0]
 
-def processInput(currentStage, text):
-    '''
-    - по тексту найти stageId
-    - найден?
-      - найти следующий вариант по option.nextId=stage.id
-      - найден? 
-        - вернуть его 
-        - вернуть что не понял и тд
-    - вернуть что не понял и тд
-    '''
-    selectedOption = list(filter(lambda option: option["text"] == text, currentStage["options"]))
-    optionFound = len(selectedOption) == 1
-    if not optionFound:
-        errorStage = createErrorStage(currentStage, "хмм.... не понял. Можно ещё раз?")
-        
-        return errorStage
+def getNextStage(stage, text):
+    option = findOption(stage, text)
+    if option is None: 
+        return stage
     else:
-        option = selectedOption[0]
-        nextId = option["nextId"]
-        selectedStage = list(filter(lambda stage: stage["id"] == nextId, stages))
-        stageFound = len(selectedStage) == 1
-        if not stageFound:
-            errorStage = createErrorStage(currentStage, "не найден stage с id=" + nextId)
+        return findStageById(option["nextId"])
 
-            return errorStage
-        else:
-            selectedStage = selectedStage[0]
+def saveUserAndStage(userId, stage):
+    db[userId]["stageId"] = stage
+    
+def findStageById(id):
+    return list(filter(lambda x: x["id"] == id, stages))[0]
 
-            return selectedStage
+def findOption(stage, text): 
+    options = list(filter(lambda option: option["text"] == text, stage["options"]))
+    if len(options) == 0: 
+        return None
+    else:
+        return options[0]
 
-def createErrorStage(currentStage, errorText): 
-        stageWithErrorText = currentStage.copy()
-        stageWithErrorText["text"] = errorText
-        return stageWithErrorText
+def updateUserToStage(userId, stage):
+    db[userId] = stage
+    
+        
 
 stages = [
     {

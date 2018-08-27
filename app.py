@@ -11,10 +11,6 @@ import Stage
 
 app = Flask(__name__)
 
-import sys
-
-print(sys.getdefaultencoding())
-
 def displayStage(userId, stage):
     message = stage["text"]
     options = list(map(lambda x: x["text"], stage["options"]))
@@ -29,17 +25,16 @@ def processing():
     data = json.loads(request.data)
     if 'type' not in data.keys():
         return 'not vk'
-    if data['type'] == 'confirmation':
+    elif data['type'] == 'confirmation':
         return confirmation_token
     elif data['type'] == 'message_new':
         userId = data['object']['peer_id']
         text = data["object"]["text"]
         
         currentStage = Stage.getStage(userId)
-        ApiGate.sendTextMessage(userId, json.dumps(currentStage))
-        #nextStage = Stage.processInput(currentStage, text) 
-        #Stage.updateUserToStage(userId, currentStage)
-        #displayStage(userId, currentStage)
+        nextStage = Stage.getNextStage(currentStage, text) 
+        Stage.updateUserToStage(userId, currentStage)
+        displayStage(userId, currentStage)
         
         return Response(status=200)
 
