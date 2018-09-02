@@ -12,7 +12,7 @@ def getStage(userId):
 
 def getNextStage(stage, text):
     if stage["id"] == "Результат предсказания":
-        stage.text = Predictions.getRandomPrediction()
+        stage["text"] = Predictions.getRandomPrediction()
         return stage
     
     option = findOption(stage, text)
