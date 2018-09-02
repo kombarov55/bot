@@ -1,6 +1,6 @@
  #coding: utf-8
 
- import json
+from flask import json
 
  def log(msg):
     timeStr = dt.now().strftime("%y-%m-%d %H:%M:%S")
