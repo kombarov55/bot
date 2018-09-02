@@ -37,7 +37,6 @@ def processing():
         text = data["object"]["text"]
 
         log("recieved msg: type=" + data["type"] + "userId=" + str(userId) + "text=" + text)
-
         currentStage = Stage.getStage(userId)
         log("calling Stage.getNextStage with currentStage=" + json.dumps(currentStage, ensure_ascii = False) + ", text=" + text)
         nextStage = Stage.getNextStage(currentStage, text)
@@ -45,7 +44,7 @@ def processing():
         log("nextStage=" + json.dumps(nextStage, ensure_ascii = False))
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
         
-        return Response(status=200)
+        return "OK"
 
 def log(msg):
     timeStr = dt.now().strftime("%y-%m-%d %H:%M:%S")
