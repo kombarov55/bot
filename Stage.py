@@ -11,10 +11,6 @@ def getStage(userId):
         return stages[0]
 
 def getNextStage(stage, text):
-    if stage["id"] == "Результат предсказания":
-        stage["text"] = Predictions.getRandomPrediction()
-        return stage
-    
     option = findOption(stage, text)
     print("selectedOption=" + json.dumps(option, ensure_ascii=False))
     if option is None:
@@ -23,6 +19,8 @@ def getNextStage(stage, text):
     else:
         nextId = option["nextId"]
         nextStage = findStageById(nextId)
+        if nextId == "Результат предсказания":
+            nextStage["text"] = Predictions.getRandomPrediction()
         return nextStage
 
 def saveUserAndStage(userId, stage):
@@ -51,7 +49,7 @@ stages = [
         "options": [
             { "text": "Получить предсказание", "nextId": "Подтверждение предсказания"},
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
-            # { "text": "Ничего, просто смотрю", "nextId": "Прощание" }
+            { "text": "Ничего, просто смотрю", "nextId": "Прощание" }
         ]
     },
     {
