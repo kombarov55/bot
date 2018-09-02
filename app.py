@@ -38,7 +38,7 @@ def processing():
         nextStage = Stage.getNextStage(currentStage, text) 
         #Stage.updateUserToStage(userId, currentStage)
         msg = {"userid": "asdf фыва", "msg": "1123"}
-        msg = json.dumps(msg)
+        msg = json.dumps(msg, ensure_ascii = false)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
