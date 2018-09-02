@@ -39,7 +39,6 @@ def processing():
         log("recieved msg: type=" + data["type"] + "userId=" + str(userId) + "text=" + text)
 
         currentStage = Stage.getStage(userId)
-        log()
         log("calling Stage.getNextStage with currentStage=" + json.dumps(currentStage, ensure_ascii = False) + ", text=" + text)
         nextStage = Stage.getNextStage(currentStage, text)
         #Stage.updateUserToStage(userId, currentStage)
