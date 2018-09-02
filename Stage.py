@@ -12,7 +12,9 @@ def getNextStage(stage, text):
     if option is None: 
         return stage
     else:
-        return findStageById(option["nextId"])
+        nextId = option["nextId"]
+        nextStage = findStageById(nextId)
+        return nextStage
 
 def saveUserAndStage(userId, stage):
     db[userId]["stageId"] = stage
@@ -30,8 +32,6 @@ def findOption(stage, text):
 def updateUserToStage(userId, stage):
     db[userId]["stageId"] = stage
     
-        
-
 stages = [
     {
         "id": "Первое сообщение",

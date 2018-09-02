@@ -9,8 +9,6 @@ def getStage(userId):
         db[userId] = {"stageId": stageId}
         return findStageById(stageId)
 
-def processInput(currentStage, text):
-    
 def updateStage(userId, stage):
     db[userId]["stageId"] = stage
 
