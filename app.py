@@ -9,6 +9,8 @@ import Predictions
 import ApiGate
 import Stage
 
+from datetime import datetime as dt
+
 app = Flask(__name__)
 
 import sys
@@ -33,10 +35,19 @@ def processing():
     elif data['type'] == 'message_new':
         userId = data['object']['peer_id']
         text = data["object"]["text"]
-        
+
+        log("recieved msg: type=" + data["type"] + "userId=" + userId + "text=" + text)
+
         currentStage = Stage.getStage(userId)
-        nextStage = Stage.getNextStage(currentStage, text) 
+        log()
+        log("calling Stage.getNextStage with currentStage=" + json.dumps(currentStage, ensure_ascii = False) + ", text=" + text)
+        nextStage = Stage.getNextStage(currentStage, text)
         #Stage.updateUserToStage(userId, currentStage)
+        log("nextStage=" + json.dumps(nextStage, ensure_ascii = False))
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
         
         return Response(status=200)
+
+def log(msg):
+    timeStr = dt.now().strftime("%y-%m-%d %H:%M:%S")
+    print(timeStr + "  " + msg)
