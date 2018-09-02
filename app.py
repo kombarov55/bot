@@ -36,7 +36,7 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
 
-        log("recieved msg: type=" + data["type"] + "userId=" + userId + "text=" + text)
+        log("recieved msg: type=" + data["type"] + "userId=" + str(userId) + "text=" + text)
 
         currentStage = Stage.getStage(userId)
         log()
