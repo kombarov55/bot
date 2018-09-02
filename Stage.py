@@ -1,6 +1,7 @@
  #coding: utf-8
 
 from flask import json
+import Predictions
 
 def getStage(userId):
     if userId in db: 
@@ -10,6 +11,10 @@ def getStage(userId):
         return stages[0]
 
 def getNextStage(stage, text):
+    if stage["id"] == "Результат предсказания":
+        stage.text = Predictions.getRandomPrediction()
+        return stage
+    
     option = findOption(stage, text)
     print("selectedOption=" + json.dumps(option, ensure_ascii=False))
     if option is None:
@@ -68,7 +73,12 @@ stages = [
         ]
     },
     {
-        "id": "Результат предсказания"
+        "id": "Результат предсказания",
+        "text": "placeholder",
+        "options": [
+            { "text": "скажи как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
+            { "text": " каждый день в 9 утра", "nextId": "Рассылка" }
+        ]
     },
     {
         "id": "Рассылка"
