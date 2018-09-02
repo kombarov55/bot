@@ -37,7 +37,7 @@ def processing():
         currentStage = Stage.getStage(userId)
         nextStage = Stage.getNextStage(currentStage, text) 
         #Stage.updateUserToStage(userId, currentStage)
-        msg = '{"userid": "asdf", "msg": "1123"}'
+        msg = '{"userid": "asdf фыва", "msg": "1123"}'
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
