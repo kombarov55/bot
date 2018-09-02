@@ -1,5 +1,7 @@
 #coding: utf-8
 
+from random import randint
+
 def getRandomPrediction():
     randIndex = randint(0, len(predictions))
     return predictions[randIndex]
