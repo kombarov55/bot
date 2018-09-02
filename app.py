@@ -45,6 +45,8 @@ def processing():
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
         
         return "OK"
+    else:
+        return "OK"
 
 def log(msg):
     timeStr = dt.now().strftime("%y-%m-%d %H:%M:%S")
