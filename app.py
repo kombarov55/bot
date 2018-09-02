@@ -36,12 +36,15 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
 
-        log("recieved msg: type=" + data["type"] + "userId=" + str(userId) + "text=" + text)
         currentStage = Stage.getStage(userId)
-        log("calling Stage.getNextStage with currentStage=" + json.dumps(currentStage, ensure_ascii = False) + ", text=" + text)
+        log("user info: ")
+        log("  userId=" + str(userId))
+        log("  text=" + text)
+        log("  currentStage=" + json.dumps(currentStage, ensure_ascii=False))
         nextStage = Stage.getNextStage(currentStage, text)
-        Stage.updateUserToStage(userId, currentStage)
         log("nextStage=" + json.dumps(nextStage, ensure_ascii = False))
+        Stage.updateUserToStage(userId, currentStage)
+        log("db" + json.dumps(Stage.db, ensure_ascii=False)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
         
         return "OK"
