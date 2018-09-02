@@ -13,7 +13,7 @@ def getNextStage(stage, text):
     
     option = findOption(stage, text)
     if option is None:
-        print("ERROR: could not find option with " + text + " in " + json.dumps(text, ensure_ascii = False))
+        print("ERROR: could not find option with " + text + " in " + json.dumps(stage, ensure_ascii = False))
         return stage
     else:
         nextId = option["nextId"]
