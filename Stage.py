@@ -34,7 +34,10 @@ def findOption(stage, text):
         return options[0]
 
 def updateUserToStage(userId, stage):
-    db[userId]["stageId"] = stage
+    if userId in db: 
+        db[userId]["stageId"] = stage
+    else:
+        db[userId] = {"stageId": stage}
     
 stages = [
     {
