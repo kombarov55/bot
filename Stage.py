@@ -10,8 +10,8 @@ def getStage(userId):
         return stages[0]
 
 def getNextStage(stage, text):
-    
     option = findOption(stage, text)
+    print("selectedOption=" + json.dumps(option, ensure_ascii=False))
     if option is None:
         print("ERROR: could not find option with " + text + " in " + json.dumps(stage, ensure_ascii = False))
         return stage

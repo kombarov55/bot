@@ -41,7 +41,9 @@ def processing():
         log("  userId=" + str(userId))
         log("  text=" + text)
         log("  currentStage=" + json.dumps(currentStage, ensure_ascii=False))
+        
         nextStage = Stage.getNextStage(currentStage, text)
+        
         log("nextStage=" + json.dumps(nextStage, ensure_ascii = False))
         Stage.updateUserToStage(userId, currentStage)
         log("db" + json.dumps(Stage.db, ensure_ascii=False))
