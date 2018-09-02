@@ -2,10 +2,6 @@
 
 from flask import json
 
- def log(msg):
-    timeStr = dt.now().strftime("%y-%m-%d %H:%M:%S")
-    print(timeStr + "  " + msg)
-
 def getStage(userId):
     if userId in db: 
         stageId = db[userId]["stageId"]
@@ -17,7 +13,7 @@ def getNextStage(stage, text):
     
     option = findOption(stage, text)
     if option is None:
-        log("ERROR: could not find option with " + text + " in " + json.dumps(text, ensure_ascii = False))
+        print("ERROR: could not find option with " + text + " in " + json.dumps(text, ensure_ascii = False))
         return stage
     else:
         nextId = option["nextId"]
