@@ -35,9 +35,9 @@ def findOption(stage, text):
 
 def updateUserToStage(userId, stage):
     if userId in db: 
-        db[userId]["stageId"] = stage
+        db[userId]["stageId"] = stage["id"]
     else:
-        db[userId] = {"stageId": stage}
+        db[userId] = {"stageId": stage["id"]}
     
 stages = [
     {
