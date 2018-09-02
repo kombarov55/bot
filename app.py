@@ -37,7 +37,7 @@ def processing():
         currentStage = Stage.getStage(userId)
         nextStage = Stage.getNextStage(currentStage, text) 
         #Stage.updateUserToStage(userId, currentStage)
-        msg = json.dumps(nextStage)
+        msg = "asdf фыва"
         ApiGate.sendTextMessage(userId, msg)
         
         return Response(status=200)
