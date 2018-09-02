@@ -11,6 +11,9 @@ import Stage
 
 app = Flask(__name__)
 
+import sys
+print(sys.getdefaultencoding())
+
 def displayStage(userId, stage):
     message = stage["text"]
     options = list(map(lambda x: x["text"], stage["options"]))
