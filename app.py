@@ -37,7 +37,7 @@ def processing():
         currentStage = Stage.getStage(userId)
         nextStage = Stage.getNextStage(currentStage, text) 
         #Stage.updateUserToStage(userId, currentStage)
-        ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
+        msg = json.dumps(nextStage)
+        ApiGate.sendTextMessage(userId, msg)
         
         return Response(status=200)
-
