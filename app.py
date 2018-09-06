@@ -13,6 +13,9 @@ from datetime import datetime as dt
 
 app = Flask(__name__)
 
+import sys
+print(sys.getdefaultencoding())
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!!!'
