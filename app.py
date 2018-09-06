@@ -16,6 +16,9 @@ app = Flask(__name__)
 import sys
 print(sys.getdefaultencoding())
 
+import platform
+print(platform.python_version())
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!!!'
