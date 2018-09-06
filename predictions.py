@@ -4,6 +4,8 @@ def getRandomPrediction():
     randIndex = randint(0, len(predictions))
     return predictions[randIndex]
 
+userToPrediction = {}
+
 predictions = [
         "Романтика создаст для вас новое направление",
         "С этого момента ваша ответственность принесет вам удачу"

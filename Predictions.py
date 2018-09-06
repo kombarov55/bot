@@ -1,10 +1,42 @@
 #coding: utf-8
 
 from random import randint
+from datetime import datetime as dt
 
-def getRandomPrediction():
-    randIndex = randint(0, len(predictions))
-    return predictions[randIndex]
+def getPrediction(userId):
+    if notInDb(userId) or hasOutdatedPrediction(userId):
+        predictionIndex = getRandomPredictionIndex()
+        updateTime = dt.now()
+        
+        userIdToPredictionIndex[userId] = predictionIndex
+        userIdToUpdateTime[userId] = updateTime
+
+        return predictions[predictionIndex]
+        
+    else:
+        predictionIndex = userIdToPredictionIndex[userId]
+        return predictions[predictionIndex]
+
+def getRandomPredictionIndex():
+    return randint(0, len(predictions) - 1)
+
+def notInDb(userId):
+    return userId not in userIdToPredictionIndex
+
+def hasOutdatedPrediction(userId):
+    now = dt.now()
+    summedNow = sumDays(now) 
+
+    updateTime = userIdToUpdateTime[userId]
+    summedUpdateTime = sumDays(updateTime)
+
+    return summedNow > summedUpdateTime
+
+def sumDays(date):
+    return date.year * 365 + date.month + 30 + date.day
+
+userIdToPredictionIndex = {}
+userIdToUpdateTime = {}
 
 predictions = [
         "Романтика создаст для вас новое направление",

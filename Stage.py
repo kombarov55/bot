@@ -5,7 +5,7 @@ import Predictions
 
 def getStage(userId):
     if userId in db: 
-        stageId = db[userId]["stageId"]
+        stageId = bdb[userId]["stageId"]
         return findStageById(stageId)
     else:
         return stages[0]
@@ -20,12 +20,12 @@ def getNextStage(stage, text):
         nextId = option["nextId"]
         nextStage = findStageById(nextId)
         if nextId == "Результат предсказания":
-            nextStage["text"] = Predictions.getRandomPrediction()
+            nextStage["text"] = Predictions.getPrediction(userId)
         return nextStage
 
 def saveUserAndStage(userId, stage):
     db[userId]["stageId"] = stage
-    
+
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 

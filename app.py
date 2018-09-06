@@ -13,14 +13,6 @@ from datetime import datetime as dt
 
 app = Flask(__name__)
 
-import sys
-print(sys.getdefaultencoding())
-
-def displayStage(userId, stage):
-    message = stage["text"]
-    options = list(map(lambda x: x["text"], stage["options"]))
-    ApiGate.sendKeyboardMessage(userId, message, options)
-
 @app.route('/')
 def hello_world():
     return 'Hello, World!!!'
@@ -37,18 +29,9 @@ def processing():
         text = data["object"]["text"]
 
         currentStage = Stage.getStage(userId)
-        log("user info: ")
-        log("  userId=" + str(userId))
-        log("  text=" + text)
-        log("  currentStage=" + json.dumps(currentStage, ensure_ascii=False))
-        
-        nextStage = Stage.getNextStage(currentStage, text)
-        
-        log("nextStage=" + json.dumps(nextStage, ensure_ascii = False))
+        nextStage = Stage.getNextStage(userId, currentStage, text)
         Stage.updateUserToStage(userId, nextStage)
-        log("db" + json.dumps(Stage.db, ensure_ascii=False))
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
-        
         return "OK"
     else:
         return "OK"
@@ -56,3 +39,9 @@ def processing():
 def log(msg):
     timeStr = dt.now().strftime("%y-%m-%d %H:%M:%S")
     print(timeStr + "  " + msg)
+
+def logRequest(userId, text, currentStage):
+        log("user info: ")
+        log("  userId=" + str(userId))
+        log("  text=" + text)
+        log("  currentStage=" + json.dumps(currentStage, ensure_ascii=False))
