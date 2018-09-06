@@ -5,7 +5,7 @@ import Predictions
 
 def getStage(userId):
     if userId in db: 
-        stageId = bdb[userId]["stageId"]
+        stageId = db[userId]["stageId"]
         return findStageById(stageId)
     else:
         return None
