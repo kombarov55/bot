@@ -29,6 +29,8 @@ def processing():
         text = data["object"]["text"]
 
         currentStage = Stage.getStage(userId)
+        logRequest(userId, text, currentStage)
+        
         nextStage = Stage.getNextStage(userId, currentStage, text)
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
