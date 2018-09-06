@@ -32,6 +32,7 @@ def processing():
         nextStage = Stage.getNextStage(userId, currentStage, text)
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
+        
         return "OK"
     else:
         return "OK"
