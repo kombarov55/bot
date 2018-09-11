@@ -64,7 +64,7 @@ def containsSwear(str):
 
 swearResponse = ["Нука. Не выражаться!", "Ещё раз и домой пойдешь!", "Ну и этому тебя учили родители?", "Ты этими губами целуешь свою маму?", "Как тебе не стыдно!"]
 def getSwearResponse():
-    i = randint(0, len(swearResponse))
+    i = randint(0, len(swearResponse) - 1)
     return swearResponse[i]
     
 stages = [
