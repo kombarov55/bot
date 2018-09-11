@@ -23,7 +23,7 @@ def start():
     scheduler = BackgroundScheduler()
     scheduler.start()
     scheduler.add_job(
-        func = p,
+        func = broadcast,
         trigger = IntervalTrigger(seconds = 1),
         id = "sendLoop",
         name = "send broadcast",
