@@ -1,6 +1,8 @@
 #coding: utf-8
 
-from threading import Timer
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+import atexit
 
 import ApiGate
 import Predictions
@@ -17,7 +19,18 @@ def unsubscribe(userId):
     db[userId] = False
 
 def sendLoop():
-    print("send loop")    
+    print("send loop")
+    scheduler = BackgroundScheduler()
+    scheduler.start()
+    scheduler.add_job(
+        func = p,
+        trigger = IntervalTrigger(seconds = 1),
+        id = "sendLoop",
+        name = "send broadcast",
+        replace_existing = True
+    )
+    atexit.register(lambda: scheduler.shutdown())
+    
     #Timer(5.0, sendLoop).start() 
     
     #for userId, isSubscribed in db.items(): 
@@ -25,3 +38,6 @@ def sendLoop():
             #msg = Predictions.getPrediction(userId)
             #print("send prediction to " + userId ": " + msg)
             #ApiGate.sendTextMessage(userId, msg)
+
+def p():
+    print("OK")
