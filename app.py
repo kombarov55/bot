@@ -61,7 +61,6 @@ def logRequest(userId, text, currentStage):
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
-print("brodcast?")
 Broadcast.start()
 
 if __name__ == "__main__":
