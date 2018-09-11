@@ -38,7 +38,7 @@ def getNextStage(userId, stage, text):
             result["text"] = Predictions.getPrediction(userId)
 
     if didSwear(userId):
-        result["text"] = "Не делай так больше, пожалуйста &#128527; \n" + result["text"]
+        result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
 
 def saveUserAndStage(userId, stage):
@@ -60,7 +60,7 @@ def updateUserToStage(userId, stage):
     else:
         db[userId] = {"stageId": stage["id"]}
 
-swears = ["сука", "блять", "нахуй", "хуй", "хуйня", "пизда", "пиздуй", "пиздец", "ебать"]
+swears = ["сука", "бля", "соси", "хер", "блять", "нахуй", "хуй", "хуйня", "пизда", "пиздуй", "пиздец", "ебать"]
 def containsSwear(str):
     lowerStr = str.lower()
     for w in swears:
