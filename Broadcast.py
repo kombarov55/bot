@@ -9,16 +9,17 @@ import Predictions
 db = {}
 
 def subscribe(userId):
-    print("Broadcast: subscribed user with userId=" + userId)
+    print("Broadcast: subscribed user with userId=" + str(userId))
     db[userId] = True
 
 def unsubscribe(userId):
-    print("Broadcast: unsubscribed user with userId=" + userId)
+    print("Broadcast: unsubscribed user with userId=" + str(userId))
     db[userId] = False
 
 def sendLoop():
-    Timer(5.0, sendLoop).start()
     print("send loop")    
+    #Timer(5.0, sendLoop).start() 
+    
     #for userId, isSubscribed in db.items(): 
         #if isSubscribed:
             #msg = Predictions.getPrediction(userId)
