@@ -38,7 +38,11 @@ def getNextStage(userId, stage, text):
             result["text"] = Predictions.getPrediction(userId)
         elif nextId == "Рассылка":
             Broadcast.subscribe(userId)
-            
+
+def makePredictionStage(userId):
+    result = deepcopy(findStageById("Результат предсказания"))
+    result["text"] = Predictions.getPrediction(userId)
+    return result
             
 
     if didSwear(userId):
@@ -167,7 +171,7 @@ stages = [
         "text": "Отлично! А теперь скажи, чего тебе хочется!",
         "options": [
             { "text": "Скажи как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
-            { "text": "Хочу получать презсказания по утрам ;)", "nextId": "Рассылка" },
+            { "text": "Хочу получать предсказания по утрам ;)", "nextId": "Рассылка" },
             { "text": "Вообще, хотелось бы чего нибудь ещё...", "nextId": "Назад" }
         ]
     },
