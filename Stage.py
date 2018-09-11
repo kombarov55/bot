@@ -3,6 +3,7 @@
 from flask import json
 import Predictions
 from random import randint
+from copy import deepcopy
 
 def getStage(userId):
     if userId in db: 
@@ -18,7 +19,8 @@ def getNextStage(userId, stage, text):
         return stages[0]
     
     if containsSwear(text):
-        stage["text"] = getSwearResponse()
+        result = copy.deepcopy(stage)
+        result["text"] = getSwearResponse()
         return stage
     
     option = findOption(stage, text)
