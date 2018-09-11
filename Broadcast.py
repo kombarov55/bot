@@ -35,6 +35,6 @@ def start():
         trigger = IntervalTrigger(seconds = 1),
         id = "sendLoop",
         name = "send broadcast",
-        replace_existing = Truep
+        replace_existing = True
     )
     atexit.register(lambda: scheduler.shutdown())
