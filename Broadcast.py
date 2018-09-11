@@ -5,7 +5,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 import atexit
 
 import ApiGate
-import Predictions
+import Stage
 
 #userId -> Boolean
 db = {}
