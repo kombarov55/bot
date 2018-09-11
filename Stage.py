@@ -38,7 +38,7 @@ def getNextStage(userId, stage, text):
             result["text"] = Predictions.getPrediction(userId)
 
     if didSwear(userId):
-        result["text"] += "Не делай так больше, пожалуйста &#128527; \n"
+        result["text"] = "Не делай так больше, пожалуйста &#128527; \n" + result["text"]
     return result
 
 def saveUserAndStage(userId, stage):
