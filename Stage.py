@@ -1,9 +1,11 @@
  #coding: utf-8
 
 from flask import json
-import Predictions
 from random import randint
 from copy import deepcopy
+
+import Broadcast
+import Predictions
 
 def getStage(userId):
     if userId in db: 
@@ -11,8 +13,6 @@ def getStage(userId):
         return findStageById(stageId)
     else:
         return None
-
-    
 
 def getNextStage(userId, stage, text):
     if containsSwear(text):
@@ -36,10 +36,20 @@ def getNextStage(userId, stage, text):
         result = deepcopy(findStageById(nextId))
         if nextId == "Результат предсказания":
             result["text"] = Predictions.getPrediction(userId)
+        elif nextId == "Рассылка":
+            Broadcast.subscribe(userId)
+            
+            
 
     if didSwear(userId):
         result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
+
+def getPredictionStage(userId):
+    result = deepcopy(findStageById("Результат предсказания"))
+    result["text"] = Predictions.getPrediction(userId)
+    return result
+    
 
 def saveUserAndStage(userId, stage):
     db[userId]["stageId"] = stage
