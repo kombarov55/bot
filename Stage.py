@@ -27,7 +27,9 @@ def getNextStage(userId, stage, text):
     print("selectedOption=" + json.dumps(option, ensure_ascii=False))
     if option is None:
         print("ERROR: could not find option with " + text + " in " + json.dumps(stage, ensure_ascii = False))
-        return stage
+        result = deepcopy(stage)
+        result["text"] = "Я тебя не понял. Лучше выбери ответ!"
+        return result
     else:
         nextId = option["nextId"]
         nextStage = findStageById(nextId)
@@ -64,7 +66,7 @@ def containsSwear(str):
 
 swearResponse = ["Нука. Не выражаться!", "Ещё раз и домой пойдешь!", "Ну и этому тебя учили родители?", "Ты этими губами целуешь свою маму?", "Как тебе не стыдно!"]
 def getSwearResponse():
-    i = randint(0, len(swearResponse) - 1)
+    i = randint(0, len(swearResponse))
     return swearResponse[i]
     
 stages = [
