@@ -17,6 +17,14 @@ def subscribe(userId):
 def unsubscribe(userId):
     print("Broadcast: unsubscribed user with userId=" + str(userId))
     db[userId] = False
+    
+def broadcast():
+    print("brodcast")
+    for userId, isSubscribed in db.items(): 
+        if isSubscribed:
+            msg = Predictions.getPrediction(userId)
+            print("send prediction to " + userId + ": " + msg)
+            ApiGate.sendTextMessage(userId, msg)
 
 def start():
     print("send loop")
@@ -27,14 +35,6 @@ def start():
         trigger = IntervalTrigger(seconds = 1),
         id = "sendLoop",
         name = "send broadcast",
-        replace_existing = True
+        replace_existing = Truep
     )
     atexit.register(lambda: scheduler.shutdown())
-
-def broadcast():
-    for userId, isSubscribed in db.items(): 
-        if isSubscribed:
-            msg = Predictions.getPrediction(userId)
-            print("send prediction to " + userId + ": " + msg)
-            ApiGate.sendTextMessage(userId, msg)
-            
