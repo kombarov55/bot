@@ -60,6 +60,8 @@ def logRequest(userId, text, currentStage):
         log("  currentStage=" + json.dumps(currentStage, ensure_ascii=False))
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
+
+Broadcast.sendLoop()
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
-    Broadcast.sendLoop()
