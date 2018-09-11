@@ -19,7 +19,7 @@ def getNextStage(userId, stage, text):
         return stages[0]
     
     if containsSwear(text):
-        result = copy.deepcopy(stage)
+        result = deepcopy(stage)
         result["text"] = getSwearResponse()
         return stage
     
