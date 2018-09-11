@@ -13,6 +13,11 @@ def getStage(userId):
 def getNextStage(userId, stage, text):
     if stage is None:
         return stages[0]
+    
+    if containsSwear(text):
+        stage["text"] = "Нука. Не выражаться!"
+        return stage
+    
     option = findOption(stage, text)
     print("selectedOption=" + json.dumps(option, ensure_ascii=False))
     if option is None:
@@ -43,6 +48,14 @@ def updateUserToStage(userId, stage):
         db[userId]["stageId"] = stage["id"]
     else:
         db[userId] = {"stageId": stage["id"]}
+
+swears = ["сука", "блять", "нахуй", "хуй", "хуйня", "пизда", "пиздуй", "пиздец", "ебать"]
+def containsSwear(str):
+    lowerStr = str.lower()
+    for w in swears:
+        if w in lowerStr:
+            return True
+    return False
     
 stages = [
     {
