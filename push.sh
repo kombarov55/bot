@@ -1,5 +1,1 @@
-#!/bin/bash
-
-git add *.py
-git commit -m "changes"
-git push origin master
+git commit Stage.py -m "changes"; git push origin master
