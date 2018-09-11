@@ -35,6 +35,6 @@ def broadcast():
     for userId, isSubscribed in db.items(): 
         if isSubscribed:
             msg = Predictions.getPrediction(userId)
-            print("send prediction to " + userId ": " + msg)
+            print("send prediction to " + userId + ": " + msg)
             ApiGate.sendTextMessage(userId, msg)
             
