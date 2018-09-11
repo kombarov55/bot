@@ -2,6 +2,7 @@
 
 from flask import json
 import Predictions
+from random import randint
 
 def getStage(userId):
     if userId in db: 
@@ -10,12 +11,14 @@ def getStage(userId):
     else:
         return None
 
+    
+
 def getNextStage(userId, stage, text):
     if stage is None:
         return stages[0]
     
     if containsSwear(text):
-        stage["text"] = "Нука. Не выражаться!"
+        stage["text"] = getSwearResponse()
         return stage
     
     option = findOption(stage, text)
@@ -56,6 +59,11 @@ def containsSwear(str):
         if w in lowerStr:
             return True
     return False
+
+swearResponse = ["Нука. Не выражаться!", "Ещё раз и домой пойдешь!", "Ну и этому тебя учили родители?", "Ты этими губами целуешь свою маму?", "Как тебе не стыдно!"]
+def getSwearResponse():
+    i = randint(0, len(swearResponse))
+    return swearResponse[i]
     
 stages = [
     {
