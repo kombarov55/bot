@@ -16,9 +16,7 @@ def getStage(userId):
 
 def getNextStage(userId, stage, text):
     if containsSwear(text):
-        result = deepcopy(stage)
-        result["text"] = getSwearResponse()
-        return result
+        return getSwearResponseJson(stage)
 
     if stage is None:
         return stages[0]
@@ -68,7 +66,13 @@ swearResponse = ["&#128563; Нука. Не выражаться!", "Ещё ра�
 def getSwearResponse():
     i = randint(0, len(swearResponse))
     return swearResponse[i]
-    
+
+def getSwearResponseJson(stage):
+    result = findStageById("Мат")
+    result["text"] = getSwearResponse()
+    result["options"][0]["nextId"] = stage["id"]
+    return result
+
 stages = [
     {
         "id": "Первое сообщение",
@@ -131,13 +135,20 @@ stages = [
             { "text": "Прости, я поспешил.", "nextId": "Предсказание" }
         ]
     },
-        {
+    {
         "id": "Вопрос",
         "text": "Отлично. Ты можешь задать любой вопрос! Наши админы через какое то ответят тебе. Если хочешь вновь получать предсказания - нажми назад)",
         "options": [
             { "text": "Назад", "nextId": "Назад" }
         ]
     },
+    {
+        "id": "Мат",
+        "text": "placeholder",
+        "options": [
+            { "text": "Извини. Больше так не буду.", "nextId": "placeholder" }
+        ]
+    }
 ]
 
 db = {}
