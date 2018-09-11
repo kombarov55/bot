@@ -16,6 +16,7 @@ def getStage(userId):
 
 def getNextStage(userId, stage, text):
     if containsSwear(text):
+        reflectSwear(userId)
         return getSwearResponseJson(stage)
 
     if stage is None:
@@ -23,17 +24,22 @@ def getNextStage(userId, stage, text):
 
     option = findOption(stage, text)
     print("selectedOption=" + json.dumps(option, ensure_ascii=False))
+
+    result = None
+
     if option is None:
         print("ERROR: could not find option with " + text + " in " + json.dumps(stage, ensure_ascii = False))
         result = deepcopy(stage)
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
-        return result
     else:
         nextId = option["nextId"]
-        nextStage = findStageById(nextId)
+        result = deepcopy(findStageById(nextId))
         if nextId == "Результат предсказания":
-            nextStage["text"] = Predictions.getPrediction(userId)
-        return nextStage
+            result["text"] = Predictions.getPrediction(userId)
+
+    if didSwear(userId):
+        result["text"] += "Не делай так больше, пожалуйста &#128527; \n"
+    return result
 
 def saveUserAndStage(userId, stage):
     db[userId]["stageId"] = stage
@@ -72,6 +78,17 @@ def getSwearResponseJson(stage):
     result["text"] = getSwearResponse()
     result["options"][0]["nextId"] = stage["id"]
     return result
+
+# userId -> Boolean
+swearMap = {}
+def didSwear(userId):
+    didSwear = userId in swearMap and swearMap[userId] is True
+    swearMap[userId] = False
+    return didSwear
+
+def reflectSwear(userId):
+    swearMap[userId] = True
+    
 
 stages = [
     {
