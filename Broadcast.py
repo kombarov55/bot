@@ -23,7 +23,7 @@ def broadcast():
     for userId, isSubscribed in db.items(): 
         if isSubscribed:
             stage = Stage.makePredictionStage(userId)
-            print("send prediction to " + str(userId) + ": " + stage)
+            print("send prediction to " + str(userId) + ": " + str(stage))
             ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
 
 def start():
