@@ -44,11 +44,6 @@ def getNextStage(userId, stage, text):
     if didSwear(userId):
         result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
-
-def getPredictionStage(userId):
-    result = deepcopy(findStageById("Результат предсказания"))
-    result["text"] = Predictions.getPrediction(userId)
-    return result
     
 
 def saveUserAndStage(userId, stage):
