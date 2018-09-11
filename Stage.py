@@ -15,14 +15,14 @@ def getStage(userId):
     
 
 def getNextStage(userId, stage, text):
-    if stage is None:
-        return stages[0]
-    
     if containsSwear(text):
         result = deepcopy(stage)
         result["text"] = getSwearResponse()
         return stage
-    
+
+    if stage is None:
+        return stages[0]
+
     option = findOption(stage, text)
     print("selectedOption=" + json.dumps(option, ensure_ascii=False))
     if option is None:
