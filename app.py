@@ -9,6 +9,8 @@ import Predictions
 import ApiGate
 import Stage
 
+from werkzeug.contrib.fixers import ProxyFix
+
 from datetime import datetime as dt
 
 app = Flask(__name__)
@@ -55,6 +57,6 @@ def logRequest(userId, text, currentStage):
         log("  text=" + text)
         log("  currentStage=" + json.dumps(currentStage, ensure_ascii=False))
 
-
+app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
