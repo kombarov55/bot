@@ -77,7 +77,7 @@ def containsSwear(str):
 
 swearResponse = ["&#128563; Нука. Не выражаться!", "Ещё раз и домой пойдешь! &#128545;", "Ну и этому тебя учили родители? &#128560;", "И этими губами целуешь свою маму? &#128541;", "Как тебе не стыдно! &#128548;"]
 def getSwearResponse():
-    i = randint(0, len(swearResponse))
+    i = randint(0, len(swearResponse) - 1)
     return swearResponse[i]
 
 def getSwearResponseJson(stage):

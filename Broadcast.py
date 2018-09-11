@@ -43,5 +43,5 @@ def start():
 
 goodMorning = ["С добрым утром! &#128521;", "Доброе утро! &#128572;", "Доброе утро, друг! &#128524;", "Приветствую! &#128521;", "Доброе утро! &#128520;"]
 def getGoodMorningText():
-    i = randint(0, len(goodMorning - 1))
+    i = randint(0, len(goodMorning) - 1)
     return goodMorning[i]
