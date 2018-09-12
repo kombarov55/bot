@@ -32,7 +32,7 @@ def processing():
     data = json.loads(request.data)
     #print("app: " + str(data))
     if 'type' not in data.keys():
-        return 'not vk'
+        return 'ok'
     elif data['type'] == 'confirmation':
         return ApiGate.confirmation_token
     elif data['type'] == 'message_new':
@@ -46,7 +46,7 @@ def processing():
             Stage.resetUser(userId)
             stage = Stage.stages[0]
             ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
-            return "OK", 200
+            return "ok"
             
         currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None: 
@@ -56,16 +56,16 @@ def processing():
                 if option is None:
                     print("Вопрос перенаправляется получателям")
                     ApiGate.forwardMessage(msg_id)
-                    return "OK", 200
+                    return "ok"
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
 
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
-        return "OK", 200
+        return "ok"
     else:
-        return "OK", 200
+        return "ok"
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
