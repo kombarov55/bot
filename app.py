@@ -45,9 +45,8 @@ def processing():
         currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None: 
             print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
-
-        if currentStage is not None and currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" and Stage.findOption(currentStage, text) is None:
-            forwardMessage(msg_id)
+            if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" and Stage.findOption(currentStage, text) is None:
+                forwardMessage(msg_id)
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
