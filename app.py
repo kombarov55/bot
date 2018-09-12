@@ -51,7 +51,7 @@ def processing():
                 if option is None:
                     print("Вопрос перенаправляется получателям")
                     ApiGate.forwardMessage(msg_id)
-                return "OK"
+                    return "OK"
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
