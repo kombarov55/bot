@@ -42,7 +42,7 @@ def getNextStage(userId, stage, text):
         elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
             result = findStageById("Предсказание с включенной рассылкой")
         if didSwear(userId):
-        result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
+            result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
 
 def makeBroadcastPredictionStage(userId):
