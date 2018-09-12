@@ -32,7 +32,7 @@ def broadcast():
                 ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
 
 def isCorrectTiming():
-    return dt.now().second == 0
+    return dt.now().hour == 3
         
                 
 def start():
@@ -41,7 +41,7 @@ def start():
     scheduler.start()
     scheduler.add_job(
         func = broadcast,
-        trigger = IntervalTrigger(seconds = 5),
+        trigger = IntervalTrigger(seconds = 60),
         id = "sendLoop",
         name = "send broadcast",
         replace_existing = True
