@@ -29,6 +29,14 @@ def getNextStage(userId, stage, text):
     print("selectedOption=" + str(option))
 
     result = None
+
+    if stage["id"] == "Мат":
+        if containsExcuses(text) or option is not None: 
+            swearMap[userId] = False
+            nextId = stage["options"][0]["nextId"]
+            result = deepcopy(findStageById(nextId))
+            result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
+            return result
     
     if stage["id"] == "Мат" and option is None:
         return getSwearRefusementJson(stage)
