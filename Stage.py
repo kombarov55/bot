@@ -15,7 +15,7 @@ def getCurrentStage(userId):
         return None
 
 def resetUser(userId):
-    db[userId] = stages[0]
+    db[userId] = {"stageId": stages[0]["id"]}
 
 def getNextStage(userId, stage, text):
     if containsSwear(text):
@@ -44,6 +44,7 @@ def getNextStage(userId, stage, text):
             Broadcast.unsubscribe(userId)
         elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
             result = findStageById("Предсказание с включенной рассылкой")
+
         if didSwear(userId):
             result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
@@ -90,7 +91,14 @@ def getSwearResponse():
 def getSwearResponseJson(stage):
     result = findStageById("Мат")
     result["text"] = getSwearResponse()
-    result["options"][0]["nextId"] = stage["id"]
+
+    nextId = None
+    if stage["id"] == "Мат":
+        nextId = stage["options"][0]["nextId"]
+    else: 
+        nextId = stage["id"]
+    result["options"][0]["nextId"] = nextId
+    
     return result
 
 # userId -> Boolean
