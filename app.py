@@ -30,7 +30,7 @@ def hello_world():
 @app.route('/', methods=['POST'])
 def processing():
     data = json.loads(request.data)
-    print("app: " + str(data))
+    #print("app: " + str(data))
     if 'type' not in data.keys():
         return 'not vk'
     elif data['type'] == 'confirmation':
