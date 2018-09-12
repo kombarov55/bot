@@ -3,6 +3,8 @@
 import vk
 import json
 
+import Stage
+
 session = vk.Session()
 api = vk.API(session, v=5.80)
 myId=33167934
@@ -30,12 +32,17 @@ def optionsToButtons(options):
 
 recipients = [myId]
 def forwardMessage(msgId):
-    for userId in recipients: 
-        api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId])
+    for userId in recipients:
+        currentStage = Stage.getCurrentStage(userId)
+        if currentStage is not None:
+            keyboard = optionsToKeyboard(currentStage["options"])
+            api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId], keyboard = keyboard)
+        else: 
+            api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId])
     
 
 keyboard_json = {
-    "one_time": False,
+    "one_time": True,
     "buttons":
     [
         [
