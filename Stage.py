@@ -30,6 +30,17 @@ def getNextStage(userId, stage, text):
 
     result = None
 
+    if stage["id"] == "Мат":
+        if containsExcuses(text) or option is not None: 
+            swearMap[userId] = False
+            nextId = stage["options"][0]["nextId"]
+            result = deepcopy(findStageById(nextId))
+            result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
+            return result
+    
+    if stage["id"] == "Мат" and option is None:
+        return getSwearRefusementJson(stage)
+    
     if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:
         result = deepcopy(stage)
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
@@ -46,7 +57,7 @@ def getNextStage(userId, stage, text):
             result = findStageById("Предсказание с включенной рассылкой")
 
         if didSwear(userId):
-            result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
+            result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
     return result
 
 def makeBroadcastPredictionStage(userId):
@@ -75,7 +86,7 @@ def updateUserToStage(userId, stage):
     else:
         db[userId] = {"stageId": stage["id"]}
 
-swears = ["сука", "бля", "соси", "хер", "блять", "нахуй", "хуй", "хуйня", "пизда", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
+swears = ["сука", "бля", "соси", "хер", "долбоеб", "блять", "нахуй", "хуй", "хуйня", "пизда", "пизду", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
 def containsSwear(str):
     lowerStr = str.lower()
     for w in swears:
@@ -100,6 +111,21 @@ def getSwearResponseJson(stage):
     result["options"][0]["nextId"] = nextId
     
     return result
+
+def getSwearRefusementJson(stage):
+  result = getSwearResponseJson(stage)
+  result["text"] = "Нет, так дело не пойдёт &#128545; Пока не извинишься, я с тобой не разговариваю!"
+  return result
+
+
+excuses = ["прости", "извини", "сожалею", "извиняюсь"]
+def containsExcuses(str): 
+  lowerStr = str.lower()
+  for excuse in excuses: 
+    if excuse in lowerStr: 
+      return True
+  return False
+
 
 # userId -> Boolean
 swearMap = {}
@@ -220,7 +246,7 @@ stages = [
         "text": "Чтож, твоё право &#127770; Отныне прекращаю высылать тебе предсказания по утрам",
         "options": [
             { "text": "Скажи, как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
-            { "text": "Хочу получать презсказания по утрам ;)", "nextId": "Рассылка" },
+            { "text": "Хочу получать предсказания по утрам ;)", "nextId": "Рассылка" },
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" }
         ]
     },    
@@ -242,7 +268,7 @@ stages = [
     },
     {
         "id": "Вопрос",
-        "text": "Отлично. Ты можешь задать любой вопрос! Наши админы через какое то ответят тебе. Если хочешь вновь получать предсказания - нажми назад)",
+        "text": "Отлично. Ты можешь задать любой вопрос! Наши админы через какое то время ответят тебе. Если хочешь вновь получать предсказания - нажми или напиши 'Назад')",
         "options": [
             { "text": "Назад", "nextId": "Назад" }
         ]
