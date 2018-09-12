@@ -3,6 +3,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from random import randint
+from datetime import datetime as dt
 import atexit
 
 
@@ -21,14 +22,19 @@ def unsubscribe(userId):
     db[userId] = False
     
 def broadcast():
-    for userId, isSubscribed in db.items(): 
-        if isSubscribed:
-            stage = Stage.makePredictionStage(userId)
-            print("send prediction to " + str(userId) + ": " + str(stage))
+    if isCorrectTiming():
+        for userId, isSubscribed in db.items(): 
+            if isSubscribed:
+                stage = Stage.makePredictionStage(userId)
+                print("send prediction to " + str(userId) + ": " + str(stage))
+                
+                ApiGate.sendTextMessage(userId, getGoodMorningText() + " А вот твоё предсказание на сегодня!")
+                ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
 
-            ApiGate.sendTextMessage(userId, getGoodMorningText() + " А вот твоё предсказание на сегодня!")
-            ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
-
+def isCorrectTiming():
+    return dt.now().second == 0
+        
+                
 def start():
     print("send loop")
     scheduler = BackgroundScheduler()
