@@ -38,12 +38,16 @@ def processing():
     elif data['type'] == 'message_new':
         userId = data['object']['peer_id']
         text = data["object"]["text"]
+        msg_id = data["object"]["id"]
 
         print("app: incoming message: userId=" + str(userId) + " text=" + text)
 
         currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None: 
             print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
+
+        if stage["id"] == "Вопрос" or stage["id"] == "Задание вопроса" and findOption(stage, text) is None:
+            forwardMessage(msg_id)
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])

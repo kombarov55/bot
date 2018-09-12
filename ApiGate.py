@@ -28,6 +28,11 @@ def optionsToButtons(options):
     }], textList))
     return buttons
 
+recipients = [myId]
+def forwardMessage(msgId):
+    api.messages.send(access_token = token, user_id = myId, message = "Пересылаемое сообщение", forward_messages = [msg_id])
+    
+
 keyboard_json = {
     "one_time": True,
     "buttons":

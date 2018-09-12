@@ -23,7 +23,7 @@ def getNextStage(userId, stage, text):
         return stages[0]
 
     option = findOption(stage, text)
-    print("selectedOption=" + json.dumps(option, ensure_ascii=False))
+    print("selectedOption=" + str(option))
 
     result = None
 
@@ -41,6 +41,7 @@ def getNextStage(userId, stage, text):
             Broadcast.unsubscribe(userId)
         elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
             result = findStageById("Предсказание с включенной рассылкой")
+        elif nextId == "Вопрос" or nextId == "Задание вопроса":
     if didSwear(userId):
         result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
@@ -236,6 +237,13 @@ stages = [
             { "text": "Назад", "nextId": "Назад" }
         ]
     },
+    {
+        "id": "Задание вопроса",
+        "text": "Вопрос отослан админам. В ближайшее время вам на него ответят",
+        "options": [
+            { "text": "Назад", "nextId": "Назад" }
+        ]
+    },    
     {
         "id": "Мат",
         "text": "placeholder",
