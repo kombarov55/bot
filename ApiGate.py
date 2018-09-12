@@ -30,7 +30,8 @@ def optionsToButtons(options):
 
 recipients = [myId]
 def forwardMessage(msgId):
-    api.messages.send(access_token = token, user_id = myId, message = "Пересылаемое сообщение", forward_messages = [msgId])
+    for userId in recipients: 
+        api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId])
     
 
 keyboard_json = {
