@@ -46,7 +46,7 @@ def processing():
             Stage.resetUser(userId)
             stage = Stage.stages[0]
             ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
-            return "OK"
+            return "OK", 200
             
         currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None: 
@@ -56,16 +56,16 @@ def processing():
                 if option is None:
                     print("Вопрос перенаправляется получателям")
                     ApiGate.forwardMessage(msg_id)
-                    return "OK"
+                    return "OK", 200
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
 
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
-        return "OK"
+        return "OK", 200
     else:
-        return "OK"
+        return "OK", 200
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
