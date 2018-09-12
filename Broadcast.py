@@ -14,12 +14,18 @@ import Stage
 db = {}
 
 def subscribe(userId):
-    print("Broadcast: subscribed user with userId=" + str(userId))
     db[userId] = True
+    print("Broadcast: subscribed user with userId=" + str(userId))
+    print("Broadcast: db=" + str(db))
 
 def unsubscribe(userId):
+    db[userId] = False    
     print("Broadcast: unsubscribed user with userId=" + str(userId))
-    db[userId] = False
+    print("Broadcast: db=" + str(db))
+
+def isSubscribed(userId):
+    return userId in db
+
     
 def broadcast():
     print("Broadcast: sending broadcast")
