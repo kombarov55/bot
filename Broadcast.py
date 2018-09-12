@@ -26,30 +26,12 @@ def unsubscribe(userId):
 def isSubscribed(userId):
     return userId in db
 
-    
-def broadcast():
-    print("Broadcast: sending broadcast")
-    print("Broadcast: isCorrectTiming? " + str(isCorrectTiming()))
-    print("Broadcast: db=" + str(db))
-    if isCorrectTiming():
-        for userId, isSubscribed in db.items(): 
-            if isSubscribed:
-                stage = Stage.makePredictionStage(userId)
-                print("send prediction to " + str(userId) + ": " + str(stage))
-                
-                ApiGate.sendTextMessage(userId, getGoodMorningText() + " А вот твоё предсказание на сегодня!")
-                ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
-
-def isCorrectTiming():
-    return dt.now().hour == 3
-        
-                
 def start():
     print("send loop")
     scheduler = BackgroundScheduler()
     scheduler.start()
     scheduler.add_job(
-        func = broadcast,
+        func = _broadcast,
         trigger = IntervalTrigger(seconds = 60),
         id = "sendLoop",
         name = "send broadcast",
@@ -57,7 +39,23 @@ def start():
     )
     atexit.register(lambda: scheduler.shutdown())
 
-goodMorning = ["С добрым утром! &#128521;", "Доброе утро! &#128572;", "Доброе утро, друг! &#128524;", "Приветствую! &#128521;", "Доброе утро! &#128520;"]
-def getGoodMorningText():
-    i = randint(0, len(goodMorning) - 1)
-    return goodMorning[i]
+def _broadcast():
+    print("Broadcast: sending broadcast")
+    print("Broadcast: isCorrectTiming? " + str(_isCorrectTiming()))
+    print("Broadcast: db=" + str(db))
+    if _isCorrectTiming():
+        for userId, isSubscribed in db.items(): 
+            if isSubscribed:
+                stage = Stage.makePredictionStage(userId)
+                print("send prediction to " + str(userId) + ": " + str(stage))
+                
+                ApiGate.sendTextMessage(userId, _getGoodMorningText() + " А вот твоё предсказание на сегодня!")
+                ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
+
+def _isCorrectTiming():
+    return dt.now().hour == 3
+
+_goodMorning = ["С добрым утром! &#128521;", "Доброе утро! &#128572;", "Доброе утро, друг! &#128524;", "Приветствую! &#128521;", "Доброе утро! &#128520;"]
+def _getGoodMorningText():
+    i = randint(0, len(_goodMorning) - 1)
+    return _goodMorning[i]
