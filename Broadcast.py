@@ -11,15 +11,15 @@ import ApiGate
 import Stage
 
 #userId -> Boolean
-db = set()
+db = {}
 
 def subscribe(userId):
-    db.add(userId)
+    db[userId] = True
     print("Broadcast: subscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
 
 def unsubscribe(userId):
-    db.remove(userId)
+    db[userId] = False
     print("Broadcast: unsubscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
 
@@ -32,7 +32,7 @@ def start():
     scheduler.start()
     scheduler.add_job(
         func = _broadcast,
-        trigger = IntervalTrigger(seconds = 60),
+        trigger = IntervalTrigger(seconds = 59),
         id = "sendLoop",
         name = "send broadcast",
         replace_existing = True
@@ -52,7 +52,8 @@ def _broadcast():
                 ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
 
 def _isCorrectTiming():
-    return dt.now().hour == 3
+    now = dt.now
+    return now.hour == 4 and now.minute == 0
 
 _goodMorning = ["С добрым утром! &#128521;", "Доброе утро! &#128572;", "Доброе утро, друг! &#128524;", "Приветствую! &#128521;", "Доброе утро! &#128520;"]
 def _getGoodMorningText():
