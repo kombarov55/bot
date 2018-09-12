@@ -45,8 +45,12 @@ def processing():
         currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None: 
             print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
-            if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" and Stage.findOption(currentStage, text) is None:
-                ApiGate.forwardMessage(msg_id)
+            if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса":
+                print("app: Задали вопрос. ")
+                option = Stage.findOption(currentStage, text)
+                if option is None:
+                    print("Вопрос перенаправляется получателям")
+                    ApiGate.forwardMessage(msg_id)
                 return "OK"
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
