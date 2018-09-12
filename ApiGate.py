@@ -30,7 +30,7 @@ def optionsToButtons(options):
 
 recipients = [myId]
 def forwardMessage(msgId):
-    api.messages.send(access_token = token, user_id = myId, message = "Пересылаемое сообщение", forward_messages = [msg_id])
+    api.messages.send(access_token = token, user_id = myId, message = "Пересылаемое сообщение", forward_messages = [msgId])
     
 
 keyboard_json = {
