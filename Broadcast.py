@@ -53,7 +53,7 @@ def _broadcast():
 
 def _isCorrectTiming():
     now = dt.now()
-    return now.hour == 4 and now.minute == 2
+    return now.hour == 4 and now.minute == 4
 
 _goodMorning = ["С добрым утром! &#128521;", "Доброе утро! &#128572;", "Доброе утро, друг! &#128524;", "Приветствую! &#128521;", "Доброе утро! &#128520;"]
 def _getGoodMorningText():
