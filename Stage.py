@@ -41,7 +41,7 @@ def getNextStage(userId, stage, text):
         elif nextId == "Отписка":
             Broadcast.unsubscribe(userId)
         elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
-            result["options"] = findStageById("Рассылка")["options"]
+            result = findStageById("Предсказание с включенной рассылкой")
     if didSwear(userId):
         result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
@@ -175,6 +175,15 @@ stages = [
         "options": [
             { "text": "Скажи как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
             { "text": "Хочу получать предсказания по утрам ;)", "nextId": "Рассылка" },
+            { "text": "Вообще, хотелось бы чего нибудь ещё...", "nextId": "Назад" }
+        ]
+    },
+    {
+        "id": "Предсказание с включенной рассылкой",
+        "text": "Отлично! А теперь скажи, чего тебе хочется!",
+        "options": [
+            { "text": "Скажи как пройдёт сегодняшний день", "nextId": "Результат предсказания" },
+            { "text": "Я хочу прервать подписку", "nextId": "Отписка"},
             { "text": "Вообще, хотелось бы чего нибудь ещё...", "nextId": "Назад" }
         ]
     },
