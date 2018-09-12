@@ -68,5 +68,5 @@ keyboard_json = {
 
 keyboard_json = json.dumps(keyboard_json)
 
-token = "bf0caf1fb36202a7489084a98ff6bf484f71120a44e952349f4c97c6b42b153ce7425cfde6f0d80220acc"
+token = "bbbcfa8442675fa703c05c5f1f5c729d04ebcb7fa335b43d4a4b90386ae622759b12bf"
 confirmationToken = "be8af98b"
