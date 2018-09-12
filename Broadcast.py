@@ -11,15 +11,15 @@ import ApiGate
 import Stage
 
 #userId -> Boolean
-db = {}
+db = set()
 
 def subscribe(userId):
-    db[userId] = True
+    db.add(userId)
     print("Broadcast: subscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
 
 def unsubscribe(userId):
-    db[userId] = False    
+    db.remove(userId)
     print("Broadcast: unsubscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
 
@@ -52,7 +52,7 @@ def _broadcast():
                 ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
 
 def _isCorrectTiming():
-    return dt.now().hour == 3
+    return dt.now().hour == 9
 
 _goodMorning = ["С добрым утром! &#128521;", "Доброе утро! &#128572;", "Доброе утро, друг! &#128524;", "Приветствую! &#128521;", "Доброе утро! &#128520;"]
 def _getGoodMorningText():
