@@ -39,7 +39,6 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
         msg_id = data["object"]["id"]
-        currentStage = Stage.getCurrentStage(userId)
 
         print("app: incoming message: userId=" + str(userId) + " text=" + text)
 
@@ -49,8 +48,7 @@ def processing():
             api.sendKeyboardMessage(userId, stage["text"], stage["options"])
             return "OK"
             
-        
-        
+        currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None: 
             print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
             if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса":
