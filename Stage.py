@@ -41,8 +41,7 @@ def getNextStage(userId, stage, text):
             Broadcast.unsubscribe(userId)
         elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
             result = findStageById("Предсказание с включенной рассылкой")
-        elif nextId == "Вопрос" or nextId == "Задание вопроса":
-    if didSwear(userId):
+        if didSwear(userId):
         result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
 
