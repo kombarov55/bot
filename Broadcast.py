@@ -46,9 +46,8 @@ def _broadcast():
     if _isCorrectTiming():
         for userId, isSubscribed in db.items(): 
             if isSubscribed:
-                stage = Stage.makePredictionStage(userId)
+                stage = Stage.makeBroadcastPredictionStage(userId)
                 print("send prediction to " + str(userId) + ": " + str(stage))
-                
                 ApiGate.sendTextMessage(userId, _getGoodMorningText() + " А вот твоё предсказание на сегодня!")
                 ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
 
