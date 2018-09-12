@@ -1,4 +1,4 @@
- #coding: utf-8
+#coding: utf-8
 
 from flask import json
 from random import randint
@@ -7,7 +7,7 @@ from copy import deepcopy
 import Broadcast
 import Predictions
 
-def getStage(userId):
+def getCurrentStage(userId):
     if userId in db: 
         stageId = db[userId]["stageId"]
         return findStageById(stageId)
@@ -67,7 +67,7 @@ def updateUserToStage(userId, stage):
     else:
         db[userId] = {"stageId": stage["id"]}
 
-swears = ["сука", "бля", "соси", "хер", "блять", "нахуй", "хуй", "хуйня", "пизда", "пиздуй", "пиздец", "ебать"]
+swears = ["сука", "бля", "соси", "хер", "блять", "нахуй", "хуй", "хуйня", "пизда", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
 def containsSwear(str):
     lowerStr = str.lower()
     for w in swears:

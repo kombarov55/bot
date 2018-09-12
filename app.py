@@ -38,7 +38,7 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
 
-        currentStage = Stage.getStage(userId)
+        currentStage = Stage.getCurrentStage(userId)
         logRequest(userId, text, currentStage)
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
