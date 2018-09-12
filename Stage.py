@@ -36,12 +36,12 @@ def getNextStage(userId, stage, text):
         result = deepcopy(findStageById(nextId))
         if nextId == "Результат предсказания":
             result["text"] = Predictions.getPrediction(userId)
-            if Broadcast.isSubscribed(userId):
-                result["options"] = findStageById("Рассылка")["options"]
         elif nextId == "Рассылка":
             Broadcast.subscribe(userId)
         elif nextId == "Отписка":
             Broadcast.unsubscribe(userId)
+        elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
+            result["options"] = findStageById("Рассылка")["options"]
     if didSwear(userId):
         result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
     return result
