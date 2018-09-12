@@ -34,7 +34,7 @@ def processing():
     if 'type' not in data.keys():
         return 'not vk'
     elif data['type'] == 'confirmation':
-        return confirmation_token
+        return ApiGate.confirmation_token
     elif data['type'] == 'message_new':
         userId = data['object']['peer_id']
         text = data["object"]["text"]
