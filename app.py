@@ -41,10 +41,10 @@ def processing():
         print("app: incoming message: userId=" + str(userId) + " text=" + text)
 
         currentStage = Stage.getCurrentStage(userId)
-        print("app: currentStage for userId=" + str(userId) + " is " + str(currentStage))
+        print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
-        print("app: nextStage for userId=" + str(userId) + "is " + str(nextStage))
+        print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
 
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
