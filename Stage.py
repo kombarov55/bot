@@ -46,7 +46,7 @@ def getNextStage(userId, stage, text):
             result = findStageById("Предсказание с включенной рассылкой")
 
         if didSwear(userId):
-            result["text"] = "Не делай так больше, пожалуйста &#128527; \n\n\n" + result["text"]
+            result["text"] = "Не делай так больше, пожалуйста) \n" + result["text"]
     return result
 
 def makeBroadcastPredictionStage(userId):
@@ -75,7 +75,7 @@ def updateUserToStage(userId, stage):
     else:
         db[userId] = {"stageId": stage["id"]}
 
-swears = ["сука", "бля", "соси", "хер", "блять", "нахуй", "хуй", "хуйня", "пизда", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
+swears = ["сука", "бля", "соси", "хер", "блять", "нахуй", "хуй", "хуйня", "пизда", "пизду", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
 def containsSwear(str):
     lowerStr = str.lower()
     for w in swears:
