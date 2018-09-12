@@ -52,7 +52,7 @@ def _broadcast():
                 ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
 
 def _isCorrectTiming():
-    return dt.now().hour == 9
+    return dt.now().hour == 3
 
 _goodMorning = ["С добрым утром! &#128521;", "Доброе утро! &#128572;", "Доброе утро, друг! &#128524;", "Приветствую! &#128521;", "Доброе утро! &#128520;"]
 def _getGoodMorningText():
