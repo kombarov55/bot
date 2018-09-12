@@ -22,6 +22,9 @@ def unsubscribe(userId):
     db[userId] = False
     
 def broadcast():
+    print("Broadcast: sending broadcast")
+    print("Broadcast: isCorrectTiming? " + str(isCorrectTiming()))
+    print("Broadcast: db=" + str(db))
     if isCorrectTiming():
         for userId, isSubscribed in db.items(): 
             if isSubscribed:
