@@ -47,6 +47,7 @@ def processing():
             print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
             if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" and Stage.findOption(currentStage, text) is None:
                 ApiGate.forwardMessage(msg_id)
+                return "OK"
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
