@@ -39,14 +39,21 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
         msg_id = data["object"]["id"]
+        currentStage = Stage.getCurrentStage(userId)
 
         print("app: incoming message: userId=" + str(userId) + " text=" + text)
 
-        currentStage = Stage.getCurrentStage(userId)
+        if text == "RESET!":
+            Stage.resetUser(userId)
+            stage = Stage.getCurrentStage(userId)
+            api.sendKeyboardMessage(userId, stage["text"], stage["options"])
+            return "OK"
+            
+        
+        
         if currentStage is not None: 
             print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
             if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса":
-                print("app: Задали вопрос. ")
                 option = Stage.findOption(currentStage, text)
                 if option is None:
                     print("Вопрос перенаправляется получателям")
@@ -58,7 +65,6 @@ def processing():
 
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
-        
         return "OK"
     else:
         return "OK"

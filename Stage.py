@@ -14,6 +14,9 @@ def getCurrentStage(userId):
     else:
         return None
 
+def resetUser(userId):
+    db[userId] = stages[0]
+
 def getNextStage(userId, stage, text):
     if containsSwear(text):
         reflectSwear(userId)
