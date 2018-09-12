@@ -45,7 +45,7 @@ def processing():
         if text == "RESET!":
             Stage.resetUser(userId)
             stage = Stage.stages[0]
-            api.sendKeyboardMessage(userId, stage["text"], stage["options"])
+            ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
             return "OK"
             
         currentStage = Stage.getCurrentStage(userId)
