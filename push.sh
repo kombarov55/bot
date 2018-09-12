@@ -1,1 +1,1 @@
-git commit Stage.py -m "changes"; git push origin master
+git commit *.py -m "changes"; git push origin master
