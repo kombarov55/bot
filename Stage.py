@@ -28,7 +28,6 @@ def getNextStage(userId, stage, text):
     result = None
 
     if option is None:
-        print("ERROR: could not find option with " + text + " in " + json.dumps(stage, ensure_ascii = False))
         result = deepcopy(stage)
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
     else:
