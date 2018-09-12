@@ -41,7 +41,8 @@ def processing():
         print("app: incoming message: userId=" + str(userId) + " text=" + text)
 
         currentStage = Stage.getCurrentStage(userId)
-        print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
+        if currentStage is not None: 
+            print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
