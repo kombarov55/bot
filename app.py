@@ -38,26 +38,20 @@ def processing():
         userId = data['object']['peer_id']
         text = data["object"]["text"]
 
+        print("app: incoming message: userId=" + str(userId) + " text=" + text)
+
         currentStage = Stage.getCurrentStage(userId)
-        logRequest(userId, text, currentStage)
+        print("app: currentStage for userId=" + str(userId) + " is " + str(currentStage))
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
+        print("app: nextStage for userId=" + str(userId) + "is " + str(nextStage))
+
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
         
         return "OK"
     else:
         return "OK"
-
-def log(msg):
-    timeStr = dt.now().strftime("%y-%m-%d %H:%M:%S")
-    print(timeStr + "  " + msg)
-
-def logRequest(userId, text, currentStage):
-        log("user info: ")
-        log("  userId=" + str(userId))
-        log("  text=" + text)
-        log("  currentStage=" + json.dumps(currentStage, ensure_ascii=False))
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
