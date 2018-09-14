@@ -43,7 +43,7 @@ def getNextStage(userId, stage, text):
     
     if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:
         result = deepcopy(stage)
-        result["text"] = "Я тебя не понял. Лучше выбери ответ!"
+        result["text"] = ""
     else:
         nextId = option["nextId"]
         result = deepcopy(findStageById(nextId))
