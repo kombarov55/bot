@@ -11,10 +11,6 @@ import ApiGate
 import Stage
 import Broadcast
 
-
-
-
-
 app = Flask(__name__)
 
 import sys
@@ -25,7 +21,7 @@ print(platform.python_version())
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!!!'
+    return 'Test'
 
 @app.route('/', methods=['POST'])
 def processing():
