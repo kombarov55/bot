@@ -10,6 +10,7 @@ import Predictions
 import ApiGate
 import Stage
 import Broadcast
+import Handlers
 
 app = Flask(__name__)
 
@@ -27,39 +28,43 @@ def hello_world():
 def processing():
     data = json.loads(request.data)
     #print("app: " + str(data))
-    if 'type' not in data.keys():
-        return 'ok'
-    elif data['type'] == 'confirmation':
-        return ApiGate.confirmation_token
-    elif data['type'] == 'message_new':
+    if data['type'] == 'message_new':
         userId = data['object']['peer_id']
         text = data["object"]["text"]
         msg_id = data["object"]["id"]
-
-        print("app: incoming message: userId=" + str(userId) + " text=" + text)
-
-        if text == "RESET!":
-            Stage.resetUser(userId)
-            stage = Stage.stages[0]
-            ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
-            return "ok"
-            
         currentStage = Stage.getCurrentStage(userId)
-        if currentStage is not None: 
-            print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
-            if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса":
-                option = Stage.findOption(currentStage, text)
-                if option is None:
-                    print("Вопрос перенаправляется получателям")
-                    ApiGate.forwardMessage(msg_id)
-                    return "ok"
         
-        nextStage = Stage.getNextStage(userId, currentStage, text)
-        print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
+        
+        print("app: incoming message: userId=" + str(userId) + " text=" + text)
+        Handlers.handle(userId, text, currentStage)
+        
 
-        Stage.updateUserToStage(userId, nextStage)
-        ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
-        return "ok"
+        # if text == "RESET!":
+        #     Stage.resetUser(userId)
+        #     stage = Stage.stages[0]
+        #     ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
+        #     return "ok"
+            
+        # currentStage = Stage.getCurrentStage(userId)
+        # if currentStage is not None: 
+        #     print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
+        #     if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса":
+        #         option = Stage.findOption(currentStage, text)
+        #         if option is None:
+        #             print("Вопрос перенаправляется получателям")
+        #             ApiGate.forwardMessage(msg_id)
+        #             return "ok"
+        
+        # nextStage = Stage.getNextStage(userId, currentStage, text)
+        # print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
+
+        # Stage.updateUserToStage(userId, nextStage)
+        # ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
+        # return "ok"
+    elif 'type' not in data.keys():
+        return 'ok'
+    elif data['type'] == 'confirmation':
+        return ApiGate.confirmation_token
     else:
         return "ok"
 
