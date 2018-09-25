@@ -12,10 +12,9 @@ def handle(userId, text, stage):
 
 
 def defaultHandle(userId, text, stage):
-    selectedOption = findOption(stage, text)
-
+    selectedOption = Stage.findOption(stage, text)
     invalidText = selectedOption is None
-    
+
     if not invalidText: 
         nextId = option["nextId"]
         nextStage = Stage.findStageById(nextId)
@@ -26,10 +25,3 @@ def defaultHandle(userId, text, stage):
 
 def defaultRender(userId, stage):
     ApiGate.sendKeyboardMessage(userId, stage)
-    
-def findOption(stage, text): 
-    options = list(filter(lambda option: option["text"] == text, stage["options"]))
-    if len(options) == 0: 
-        return None
-    else:
-        return options[0]

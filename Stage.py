@@ -136,7 +136,14 @@ def didSwear(userId):
 
 def reflectSwear(userId):
     swearMap[userId] = True
-    
+
+def findOption(stage, text): 
+    options = list(filter(lambda option: option["text"] == text, stage["options"]))
+    if len(options) == 0: 
+        return None
+    else:
+        return options[0]
+
 
 stages = [
     {
