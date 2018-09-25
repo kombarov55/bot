@@ -15,6 +15,9 @@ def updateStage(userId, stage):
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
+def getDefaultStage():
+    return stages[0]
+
 stages = [
     {
         "id": "Первое сообщение",

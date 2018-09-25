@@ -5,7 +5,7 @@ import ApiGate
 
 def handle(userId, text, stage):
     if stage is None:
-        nextStage = Stages.getDefaultStage()
+        nextStage = Stage.getDefaultStage()
         defaultRender(userId, stage)
     else:
         defaultHandle(userId, text, stage)
