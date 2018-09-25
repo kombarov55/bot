@@ -14,6 +14,9 @@ def getCurrentStage(userId):
     else:
         return None
 
+def getDefaultStage():
+    return stages[0]
+
 def resetUser(userId):
     db[userId] = {"stageId": stages[0]["id"]}
 
