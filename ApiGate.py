@@ -21,7 +21,7 @@ def optionsToKeyboard(options):
 def sendKeyboardMessage(userId, text, options):
     keyboard = optionsToKeyboard(options)
     print("ApiGate: sendKeyboardMesssge")
-    print("\t\t\t access_token=" + access_token + " user_id=" + str(userId) + " message=" + text + " keyboard=" + str(keyboard))
+    print("\t\t\t user_id=" + str(userId) + " message=" + text + " keyboard=" + str(keyboard))
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
 
 def optionsToButtons(options):
