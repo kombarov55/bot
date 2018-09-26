@@ -85,7 +85,7 @@ def findOption(stage, text):
         return options[0]
 
 def eqOption(text, option): 
-    return option["text"].lower() == text
+    return option["text"].lower() == text.lower()
 
 def updateUserToStage(userId, stage):
     if userId in db: 
