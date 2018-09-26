@@ -42,7 +42,10 @@ def getNextStage(userId, stage, text):
     if stage["id"] == "Мат" and option is None:
         print('if stage["id"] == "Мат" and option is None:')
         return getSwearRefusementJson(stage)
-    
+
+    if option is None:
+        return stage
+
     if option is None and stage["id"] in ["Вопрос", "Задание вопроса"]:
         print('if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:')
         result = deepcopy(stage)
