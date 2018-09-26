@@ -83,62 +83,15 @@ def findOption(stage, text):
     else:
         return options[0]
 
+def isTextValid(stage, text):
+    option = findOption(stage, text)
+    return options is not None
+
 def updateUserToStage(userId, stage):
     if userId in db: 
         db[userId]["stageId"] = stage["id"]
     else:
         db[userId] = {"stageId": stage["id"]}
-
-swears = ["сука", "бля", "соси", "хер", "долбоеб", "блять", "нахуй", "хуй", "хуйня", "пизда", "пизду", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
-def containsSwear(str):
-    lowerStr = str.lower()
-    for w in swears:
-        if w in lowerStr:
-            return True
-    return False
-
-swearResponse = ["&#128563; Нука. Не выражаться!", "Ещё раз и домой пойдешь! &#128545;", "Ну и этому тебя учили родители? &#128560;", "И этими губами целуешь свою маму? &#128541;", "Как тебе не стыдно! &#128548;"]
-def getSwearResponse():
-    i = randint(0, len(swearResponse) - 1)
-    return swearResponse[i]
-
-def getSwearResponseJson(stage):
-    result = findStageById("Мат")
-    result["text"] = getSwearResponse()
-
-    nextId = None
-    if stage["id"] == "Мат":
-        nextId = stage["options"][0]["nextId"]
-    else: 
-        nextId = stage["id"]
-    result["options"][0]["nextId"] = nextId
-    
-    return result
-
-def getSwearRefusementJson(stage):
-  result = getSwearResponseJson(stage)
-  result["text"] = "Нет, так дело не пойдёт &#128545; Пока не извинишься, я с тобой не разговариваю!"
-  return result
-
-
-excuses = ["прости", "извини", "сожалею", "извиняюсь"]
-def containsExcuses(str): 
-  lowerStr = str.lower()
-  for excuse in excuses: 
-    if excuse in lowerStr: 
-      return True
-  return False
-
-
-# userId -> Boolean
-swearMap = {}
-def didSwear(userId):
-    didSwear = userId in swearMap and swearMap[userId] is True
-    swearMap[userId] = False
-    return didSwear
-
-def reflectSwear(userId):
-    swearMap[userId] = True
 
 def findOption(stage, text): 
     options = list(filter(lambda option: option["text"] == text, stage["options"]))
@@ -279,13 +232,6 @@ stages = [
         "text": "Вопрос отослан админам. В ближайшее время вам на него ответят",
         "options": [
             { "text": "Назад", "nextId": "Назад" }
-        ]
-    },    
-    {
-        "id": "Мат",
-        "text": "placeholder",
-        "options": [
-            { "text": "Извини. Больше так не буду.", "nextId": "placeholder" }
         ]
     }
 ]
