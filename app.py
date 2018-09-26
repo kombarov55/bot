@@ -11,10 +11,6 @@ import ApiGate
 import Stage
 import Broadcast
 
-
-
-
-
 app = Flask(__name__)
 
 import sys

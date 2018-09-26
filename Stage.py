@@ -73,12 +73,15 @@ def saveUserAndStage(userId, stage):
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
-def findOption(stage, text): 
-    options = list(filter(lambda option: option["text"] == text, stage["options"]))
+def findOption(stage, text):
+    options = list(filter(lambda option: eqOption(text, option), stage["options"]))
     if len(options) == 0: 
         return None
     else:
         return options[0]
+
+def eqOption(text, option): 
+    return option["text"].lower() == text
 
 def updateUserToStage(userId, stage):
     if userId in db: 
