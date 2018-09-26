@@ -55,7 +55,8 @@ def processing():
                     return "ok"
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
-        print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
+        print("app: currentStage for userId=" + str(userId) + " = " + str(currentStage)
+        print("app: nextStage for userId=" + str(userId) + " = " + str(nextStage)
 
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
