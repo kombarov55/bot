@@ -58,6 +58,7 @@ def processing():
         print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
 
         Stage.updateUserToStage(userId, nextStage)
+        print("app: message {userId=" + str(userId) + " message=" + nextStage["text"] + )
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
         return "ok"
     else:
