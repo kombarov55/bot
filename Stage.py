@@ -96,7 +96,7 @@ def updateUserToStage(userId, stage):
         db[userId]["stageId"] = stage["id"]
     else:
         db[userId] = {"stageId": stage["id"]}
-    saveDb()
+    FileUtils.saveDict(db, dbPath)
 
 swears = ["сука", "бля", "соси", "хер", "долбоеб", "блять", "нахуй", "хуй", "хуйня", "пизда", "пизду", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
 def containsSwear(str):
