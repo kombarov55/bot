@@ -300,7 +300,7 @@ db = ast.literal_eval(db_data)
 r.close()
 
 def saveDb():
-    a = open("userToStage", "a")
+    a = open("data/userToStage", "a")
     a.write(str(db))
     a.flush()
     a.close()
