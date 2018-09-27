@@ -1,12 +1,12 @@
 #coding: utf-8
 
-from flask import json
-from random import randint
 from copy import deepcopy
-import ast
+from random import randint
 
 import Broadcast
-import Predictions
+import FileUtils
+
+dbPath = "data/userToStage"
 
 def getCurrentStage(userId):
     if userId in db: 
@@ -17,7 +17,7 @@ def getCurrentStage(userId):
 
 def resetUser(userId):
     db[userId] = {"stageId": stages[0]["id"]}
-    saveDb()
+    FileUtils.saveDict(db, dbPath)
 
 def getNextStage(userId, stage, text):
     if containsSwear(text):
@@ -76,7 +76,7 @@ def makeBroadcastPredictionStage(userId):
 
 def saveUserAndStage(userId, stage):
     db[userId]["stageId"] = stage
-    saveDb()
+    FileUtils.saveDict(db, dbPath)
 
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
@@ -291,16 +291,4 @@ stages = [
     }
 ]
 
-
-r = open("data/userToStage", "r")
-db_data = r.read()
-if db_data == "":
-    db_data = "{}"
-db = ast.literal_eval(db_data)
-r.close()
-
-def saveDb():
-    a = open("data/userToStage", "a")
-    a.write(str(db))
-    a.flush()
-    a.close()
+db = FileUtils.readDict("data/userToStage")

@@ -2,6 +2,10 @@
 
 from random import randint
 from datetime import datetime as dt
+import FileUtils
+
+userIdToUpdateTimePath = "data/userIdToUpdateTime"
+userIdToPredictionIndexPath = "data/userIdToPredictionIndex"
 
 def getPrediction(userId):
     if notInDb(userId) or hasOutdatedPrediction(userId):
@@ -10,6 +14,9 @@ def getPrediction(userId):
         
         userIdToPredictionIndex[userId] = predictionIndex
         userIdToUpdateTime[userId] = updateTime
+
+        FileUtils.saveDict(userIdToUpdateTime, userIdToUpdateTimePath)
+        FileUtils.saveDict(userIdToPredictionIndex, userIdToPredictionIndexPath)
 
         return predictions[predictionIndex]
         
@@ -35,8 +42,8 @@ def hasOutdatedPrediction(userId):
 def sumDays(date):
     return date.year * 365 + date.month + 30 + date.day
 
-userIdToPredictionIndex = {}
-userIdToUpdateTime = {}
+userIdToPredictionIndex = FileUtils.readDict(userIdToPredictionIndexPath)
+userIdToUpdateTime = FileUtils.readDict(userIdToUpdateTimePath)
 
 predictions = [
     "Сегодня вы испытаете ожидаемое удивление и вспомните старых знакомых. Помимо этого, возможно впадение в легкую ностальгию, но не увлекайтесь, так как у вас найдутся более важные и интересные дела.",

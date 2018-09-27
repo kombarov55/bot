@@ -1,27 +1,28 @@
 #coding: utf-8
 
+import atexit
+from datetime import datetime as dt
+from random import randint
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from random import randint
-from datetime import datetime as dt
-import atexit
-
 
 import ApiGate
 import Stage
 
-#userId -> Boolean
-db = {}
+import FileUtils
 
 def subscribe(userId):
     db[userId] = True
     print("Broadcast: subscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
+    FileUtils.saveDict(db, broadcastDictPath)
 
 def unsubscribe(userId):
     db[userId] = False
     print("Broadcast: unsubscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
+    FileUtils.saveDict(db, broadcastDictPath)
 
 def isSubscribed(userId):
     return userId in db
@@ -59,3 +60,7 @@ _goodMorning = ["С добрым утром! &#128521;", "Доброе утро!
 def _getGoodMorningText():
     i = randint(0, len(_goodMorning) - 1)
     return _goodMorning[i]
+
+#userId -> Boolean
+broadcastDictPath = "data/broadcast"
+db = FileUtils.readDict(broadcastDictPath)
