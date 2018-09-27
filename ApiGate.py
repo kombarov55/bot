@@ -44,7 +44,7 @@ def forwardMessage(msgId):
     
 
 keyboard_json = {
-    "one_time": True,
+    "one_time": False,
     "buttons":
     [
         [
