@@ -3,15 +3,18 @@
 import ast
 
 def readDict(filename):
-    r = open(filename, "r")
-    db_data = r.read()
-    if db_data == "" or db_data is None:
-        db_data = "{}"
+    try:
+        r = open(filename, "r")
+        db_data = r.read()
+        if db_data == "" or db_data is None:
+            db_data = "{}"
 
-    dict = ast.literal_eval(db_data)
-    r.close()
+        dict = ast.literal_eval(db_data)
+        r.close()
 
-    return dict
+        return dict
+    except BaseException:
+        return {}
 
 def saveDict(map, filename):
     cleanFile(filename)
