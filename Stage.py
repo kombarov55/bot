@@ -3,6 +3,7 @@
 from flask import json
 from random import randint
 from copy import deepcopy
+import ast
 
 import Broadcast
 import Predictions
@@ -16,6 +17,7 @@ def getCurrentStage(userId):
 
 def resetUser(userId):
     db[userId] = {"stageId": stages[0]["id"]}
+    saveDb()
 
 def getNextStage(userId, stage, text):
     if containsSwear(text):
@@ -27,8 +29,6 @@ def getNextStage(userId, stage, text):
 
     option = findOption(stage, text)
     print("selectedOption=" + str(option))
-
-    result = None
 
     if stage["id"] == "Мат":
         print('if stage["id"] == "Мат":')
@@ -76,6 +76,7 @@ def makeBroadcastPredictionStage(userId):
 
 def saveUserAndStage(userId, stage):
     db[userId]["stageId"] = stage
+    saveDb()
 
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
@@ -95,6 +96,7 @@ def updateUserToStage(userId, stage):
         db[userId]["stageId"] = stage["id"]
     else:
         db[userId] = {"stageId": stage["id"]}
+    saveDb()
 
 swears = ["сука", "бля", "соси", "хер", "долбоеб", "блять", "нахуй", "хуй", "хуйня", "пизда", "пизду", "пиздуй", "пиздец", "ебать", "падла", "мразь", "пидор", "чмо", "пидорас", "жопа", "член", "мудак", "хуйло"]
 def containsSwear(str):
@@ -152,8 +154,8 @@ stages = [
         "id": "Первое сообщение",
         "text": "Здравствуй, путник! Зачем ты пришёл к нам?",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
-            { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
+            { "text": "Хочу предсказание)", "nextId": "Предсказание", "keywords": ["предсказание"]},
+            { "text": "Хочу задать вопрос", "nextId": "Вопрос",  "keywords": ["вопрос"] },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
     },
@@ -161,15 +163,15 @@ stages = [
         "id": "Ну смотри",
         "text": "Ну, смотри &#128516;",
         "options": [
-            { "text": "Хотя знаешь, я надумал)", "nextId": "Что же" }
+            { "text": "Хотя знаешь, я надумал)", "nextId": "Что же",  "keywords": ["назад"] }
         ]
     },
     {
         "id": "Что же",
         "text": "Что же?)",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
-            { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
+            { "text": "Хочу предсказание)", "nextId": "Предсказание", "keywords": ["предсказание"]},
+            { "text": "Хочу задать вопрос", "nextId": "Вопрос", "keywords": ["вопрос"] },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
     },    
@@ -184,8 +186,8 @@ stages = [
         "id": "Замечательно",
         "text": "Замечательно! Скажи чего же тебе хочется)",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
-            { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
+            { "text": "Хочу предсказание)", "nextId": "Предсказание", "keywords": ["предсказание"]},
+            { "text": "Хочу задать вопрос", "nextId": "Вопрос", "keywords": ["вопрос"] },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
     },    
@@ -200,8 +202,8 @@ stages = [
         "id": "Предсказания не помешают",
         "text": "Отлично! ",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
-            { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
+            { "text": "Хочу предсказание)", "nextId": "Предсказание", "keywords": ["предсказание"]},
+            { "text": "Хочу задать вопрос", "nextId": "Вопрос", "keywords": ["вопрос"] },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
     },     
@@ -289,4 +291,12 @@ stages = [
     }
 ]
 
-db = {}
+
+r = open("userToStage", "r")
+db = ast.literal_eval(r.read())
+r.close()
+
+def saveDb():
+    a = open("userToStage", "a")
+    a.write(str(db))
+    a.flush()
