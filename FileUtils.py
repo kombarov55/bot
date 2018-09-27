@@ -5,7 +5,7 @@ import ast
 def readDict(filename):
     r = open(filename, "r")
     db_data = r.read()
-    if db_data == "":
+    if db_data == "" or db_data is None:
         db_data = "{}"
 
     dict = ast.literal_eval(db_data)
