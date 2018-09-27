@@ -16,7 +16,7 @@ def getPrediction(userId):
         updateTime = dt.now()
         
         userIdToPredictionIndex[userId] = predictionIndex
-        userIdToUpdateTime[userId] = updateTime
+        userIdToUpdateTime[userId] = updateTime.timestamp()
 
         FileUtils.saveDict(userIdToUpdateTime, userIdToUpdateTimePath)
         FileUtils.saveDict(userIdToPredictionIndex, userIdToPredictionIndexPath)
@@ -37,7 +37,7 @@ def hasOutdatedPrediction(userId):
     now = dt.now()
     summedNow = sumDays(now) 
 
-    updateTime = userIdToUpdateTime[userId]
+    updateTime = dt.utcfromtimestamp(userIdToUpdateTime[userId])
     summedUpdateTime = sumDays(updateTime)
 
     return summedNow > summedUpdateTime
