@@ -45,7 +45,7 @@ def getNextStage(userId, stage, text):
         return getSwearRefusementJson(stage)
 
     if option is None:
-        return None
+        return stage
 
     if option is None and stage["id"] in ["Вопрос", "Задание вопроса"]:
         print('if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:')
