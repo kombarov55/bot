@@ -12,6 +12,10 @@ import Stage
 
 import FileUtils
 
+#userId -> Boolean
+broadcastDictPath = "data/broadcast"
+db = FileUtils.readDict(broadcastDictPath)
+
 def subscribe(userId):
     db[userId] = True
     print("Broadcast: subscribed user with userId=" + str(userId))
@@ -60,7 +64,3 @@ _goodMorning = ["С добрым утром! &#128521;", "Доброе утро!
 def _getGoodMorningText():
     i = randint(0, len(_goodMorning) - 1)
     return _goodMorning[i]
-
-#userId -> Boolean
-broadcastDictPath = "data/broadcast"
-db = FileUtils.readDict(broadcastDictPath)
