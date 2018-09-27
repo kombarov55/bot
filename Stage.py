@@ -292,7 +292,7 @@ stages = [
 ]
 
 
-r = open("userToStage", "r")
+r = open("data/userToStage", "r")
 db = ast.literal_eval(r.read())
 r.close()
 
@@ -300,3 +300,4 @@ def saveDb():
     a = open("userToStage", "a")
     a.write(str(db))
     a.flush()
+    a.close()
