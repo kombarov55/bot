@@ -1,11 +1,11 @@
 #coding: utf-8
 
+import atexit
+from datetime import datetime as dt
+from random import randint
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from random import randint
-from datetime import datetime as dt
-import atexit
-
 
 import ApiGate
 import Stage
