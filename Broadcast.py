@@ -1,6 +1,7 @@
 #coding: utf-8
 
 import atexit
+import sqlite3
 from datetime import datetime as dt
 from random import randint
 
@@ -10,26 +11,29 @@ from apscheduler.triggers.interval import IntervalTrigger
 import ApiGate
 import Stage
 
-import FileUtils
-
-#userId -> Boolean
-broadcastDictPath = "data/broadcast"
-db = FileUtils.readDict(broadcastDictPath)
 
 def subscribe(userId):
-    db[userId] = True
+    conn = sqlite3.connect("data/bot.db")
+    cursor = conn.cursor()
+    cursor.execute("insert or replace into broadcast values (?, ?)", (userId, 1))
+    conn.commit()
     print("Broadcast: subscribed user with userId=" + str(userId))
-    print("Broadcast: db=" + str(db))
-    FileUtils.saveDict(db, broadcastDictPath)
+
 
 def unsubscribe(userId):
-    db[userId] = False
+    conn = sqlite3.connect("data/bot.db")
+    cursor = conn.cursor()
+    cursor.execute("insert or replace into broadcast values (?, ?)", (userId, 0))
+    conn.commit()
     print("Broadcast: unsubscribed user with userId=" + str(userId))
-    print("Broadcast: db=" + str(db))
-    FileUtils.saveDict(db, broadcastDictPath)
 
 def isSubscribed(userId):
-    return userId in db
+    conn = sqlite3.connect("data/bot.db")
+    cursor = conn.cursor()
+    cursor.execute("select enabled from broadcast where user_id = " + str(userId))
+    #Если ряда нет, то вылетает None. Отсюда исключение
+    row = cursor.fetchone()
+    return row is not None and row[0] == 1
 
 def start():
     print("send loop")

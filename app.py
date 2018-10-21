@@ -1,16 +1,10 @@
 #coding: utf-8
-from flask import Flask, request, json, Response
-from datetime import datetime as dt
-from random import randint
-from collections import OrderedDict
+from flask import Flask, request, json
 from werkzeug.contrib.fixers import ProxyFix
-from datetime import datetime as dt
-import FileUtils
 
-import Predictions
 import ApiGate
-import Stage
 import Broadcast
+import Stage
 
 app = Flask(__name__)
 
@@ -56,13 +50,10 @@ def processing():
                     return "ok"
         
         nextStage = Stage.getNextStage(userId, currentStage, text)
-        print("app: currentStage for userId=" + str(userId) + " = " + str(currentStage))
-        print("app: nextStage for userId=" + str(userId) + " = " + str(nextStage))
+        print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
 
-        if nextStage != None:
-            Stage.updateUserToStage(userId, nextStage)
-            ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
-
+        Stage.updateUserToStage(userId, nextStage)
+        ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
         return "ok"
     else:
         return "ok"
