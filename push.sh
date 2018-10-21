@@ -1,1 +1,1 @@
-git commit *.py -m "changes"; git push origin master
+git add *.py; git commit -m "changes"; git push origin master;
