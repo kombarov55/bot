@@ -51,7 +51,6 @@ def start():
 def _broadcast():
     print("Broadcast: sending broadcast")
     print("Broadcast: isCorrectTiming? " + str(_isCorrectTiming()))
-    print("Broadcast: db=" + str(db))
     if _isCorrectTiming():
         for userId, isSubscribed in db.items(): 
             if isSubscribed:
