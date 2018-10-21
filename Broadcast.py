@@ -33,8 +33,9 @@ def isSubscribed(userId):
     conn = sqlite3.connect("data/bot.db")
     cursor = conn.cursor()
     cursor.execute("select enabled from broadcast where user_id = " + str(userId))
-    enabled = cursor.fetchone()[0]
-    return enabled == 0
+    #Если ряда нет, то вылетает None. Отсюда исключение
+    row = cursor.fetchone()
+    return row is not None and row[0] == 1
 
 def start():
     print("send loop")
