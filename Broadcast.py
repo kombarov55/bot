@@ -1,6 +1,7 @@
 #coding: utf-8
 
 import atexit
+import sqlite3
 from datetime import datetime as dt
 from random import randint
 
@@ -10,21 +11,27 @@ from apscheduler.triggers.interval import IntervalTrigger
 import ApiGate
 import Stage
 
-#userId -> Boolean
-db = {}
+
+conn = sqlite3.connect("data/bot.db")
+cursor = conn.cursor()
 
 def subscribe(userId):
-    db[userId] = True
+    cursor.execute("insert or replace into broadcast values (?, ?)", (userId, 1))
+    conn.commit()
     print("Broadcast: subscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
 
+
 def unsubscribe(userId):
-    db[userId] = False
+    cursor.execute("insert or replace into broadcast values (?, ?)", (userId, 0))
+    conn.commit()
     print("Broadcast: unsubscribed user with userId=" + str(userId))
     print("Broadcast: db=" + str(db))
 
 def isSubscribed(userId):
-    return userId in db
+    cursor.execute("select enabled from broadcast where user_id = " + str(userId))
+    enabled = cursor.fetchone()[0]
+    return enabled == 0
 
 def start():
     print("send loop")
