@@ -1,19 +1,10 @@
 #coding: utf-8
-from flask import Flask, request, json, Response
-from datetime import datetime as dt
-from random import randint
-from collections import OrderedDict
+from flask import Flask, request, json
 from werkzeug.contrib.fixers import ProxyFix
-from datetime import datetime as dt
 
-import Predictions
 import ApiGate
-import Stage
 import Broadcast
-
-
-
-
+import Stage
 
 app = Flask(__name__)
 
