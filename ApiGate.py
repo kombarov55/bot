@@ -22,6 +22,9 @@ def sendKeyboardMessage(userId, text, options):
     keyboard = optionsToKeyboard(options)
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
 
+def getUser(userId): 
+    return api.users.get(user_id=userId, access_token=token)[0]
+
 def optionsToButtons(options):
     textList = list(map(lambda option: option[0]["text"], options))
     buttons = list(map(lambda text: [{
