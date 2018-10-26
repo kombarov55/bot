@@ -47,7 +47,7 @@ def getNextStage(userId, stage, text):
     else:
         nextId = option["nextId"]
         result = deepcopy(findStageById(nextId))
-        if nextId == "Результат предсказания":
+        if nextId == "Результат предсказания" and Broadcast.isSubscribed(userId) is False:
             result["text"] = Predictions.getPrediction(userId)
         elif nextId == "Рассылка":
             Broadcast.subscribe(userId)
