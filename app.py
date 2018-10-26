@@ -5,6 +5,7 @@ from werkzeug.contrib.fixers import ProxyFix
 import ApiGate
 import Broadcast
 import Stage
+import Tracer
 
 app = Flask(__name__)
 
@@ -54,6 +55,7 @@ def processing():
 
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
+        Tracer.logUser(userId)
         return "ok"
     else:
         return "ok"
