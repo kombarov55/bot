@@ -63,10 +63,6 @@ def getNextStage(userId, stage, text):
         if nextId == "Отписка":
             Broadcast.unsubscribe(userId)
 
-        #TODO: убрать если проверю что без него работает так же 
-        #Фильтр на мат пройден и в прошлом соообщении был мат
-        if didSwear(userId):
-            result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
     return result
 
 def shouldChangeSubscriptionStatus(stage): 
