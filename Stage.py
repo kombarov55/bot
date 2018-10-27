@@ -46,19 +46,56 @@ def getNextStage(userId, stage, text):
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
     else:
         nextId = option["nextId"]
-        result = deepcopy(findStageById(nextId))
-        if nextId == "Результат предсказания" and Broadcast.isSubscribed(userId) is False:
-            result["text"] = Predictions.getPrediction(userId)
-        elif nextId == "Рассылка":
-            Broadcast.subscribe(userId)
-        elif nextId == "Отписка":
-            Broadcast.unsubscribe(userId)
-        elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
-            result = findStageById("Предсказание с включенной рассылкой")
 
+        result = findStageById(nextId)
+        result = deepcopy(result)
+
+        #Вставка предсказания в ответ, если нажали на предсказание 
+        if nextId == "Результат предсказания":
+            result["text"] = Predictions.getPrediction(userId)
+        
+        #Установка статуса подписки (Хочу получать предсказания по утрам / хочу прервать подписку)
+        if shouldChangeSubscriptionStatus(result):
+            changeSubscriptionStatus(userId, result)
+            
+        #Подписаться, когда нажали на кнопку подписки
+        if nextId == "Рассылка":
+            Broadcast.subscribe(userId)
+
+        #Отписаться, когда нажали на кнопку отписки
+        if nextId == "Отписка":
+            Broadcast.unsubscribe(userId)
+
+        #TODO: убрать если проверю что без него работает так же 
+        #Фильтр на мат пройден и в прошлом соообщении был мат
         if didSwear(userId):
             result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
     return result
+
+def shouldChangeSubscriptionStatus(stage): 
+    currentId = stage["id"]
+    requiredIds = [
+        "Предсказание",
+        "Предсказание с включенной рассылкой",
+        "Результат предсказания",
+        "Рассылка",
+        "Отписка"
+    ]
+
+    return currentId in requiredIds
+
+def changeSubscriptionStatus(userId, stage): 
+    currentId = stage["id"]
+    optionToChange = stage["options"][1]
+    finalText = None
+
+    if Broadcast.isSubscribed(userId) is False: 
+        finalText = "Хочу получать предсказания по утрам ;)"
+    else: 
+        finalText = "Я хочу прервать подписку"
+        
+    optionToChange["text"] = finalText
+
 
 def makeBroadcastPredictionStage(userId):
     result = deepcopy(findStageById("Результат предсказания"))
