@@ -18,26 +18,29 @@ def resetUser(userId):
     db[userId] = {"stageId": stages[0]["id"]}
 
 def getNextStage(userId, stage, text):
-    if containsSwear(text):
-        reflectSwear(userId)
-        return getSwearResponseJson(stage)
-
+    #Вынести наверх
     if stage is None:
         return stages[0]
 
     option = findOption(stage, text)
-    print("selectedOption=" + str(option))
+    currentId = stage["id"];
 
-    result = None
+    #Фильтр мата: если сматерились, то переходим на стадию "Мат" и отражаем мат для проверки в следующем сообщении 
+    if containsSwear(text):
+        reflectSwear(userId)
+        return getSwearResponseJson(stage)
 
     if stage["id"] == "Мат":
         clickedExcuseButton = option is not None
+
         if containsExcuses(text) or clickedExcuseButton: 
             return createExcuseStage(userId, stage)
-    
-    if stage["id"] == "Мат" and option is None:
-        return getSwearRefusementJson(stage)
-    
+        else: 
+            return getSwearRefusementJson(stage)
+            
+
+    result = None
+
     if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:
         result = deepcopy(stage)
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
