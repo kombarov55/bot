@@ -31,12 +31,9 @@ def getNextStage(userId, stage, text):
     result = None
 
     if stage["id"] == "Мат":
-        if containsExcuses(text) or option is not None: 
-            swearMap[userId] = False
-            nextId = stage["options"][0]["nextId"]
-            result = deepcopy(findStageById(nextId))
-            result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
-            return result
+        clickedExcuseButton = option is not None
+        if containsExcuses(text) or clickedExcuseButton: 
+            return createExcuseStage(userId, stage)
     
     if stage["id"] == "Мат" and option is None:
         return getSwearRefusementJson(stage)
@@ -102,6 +99,16 @@ def makeBroadcastPredictionStage(userId):
     result["text"] = Predictions.getPrediction(userId)
     result["options"] = findStageById("Рассылка")["options"]
     return result
+
+def createExcuseStage(userId, currentStage):
+    swearMap[userId] = False
+
+    nextId = currentStage["options"][0]["nextId"]
+    nextStage = findStageById(nextId)
+    nextStage = deepcopy(nextStage)
+    nextStage["text"] = "Не делай так больше, пожалуйста) \n\n\n" + currentStage["text"]
+
+    return nextStage
     
 
 def saveUserAndStage(userId, stage):
