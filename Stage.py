@@ -2,7 +2,6 @@
 
 from flask import json
 from random import randint
-from copy import deepcopy
 
 import Broadcast
 import Predictions
@@ -18,7 +17,6 @@ def resetUser(userId):
     db[userId] = {"stageId": stages[0]["id"]}
 
 def getNextStage(userId, stage, text):
-    #Вынести наверх
     if stage is None:
         return stages[0]
 
@@ -38,17 +36,17 @@ def getNextStage(userId, stage, text):
         else: 
             return getSwearRefusementJson(stage)
             
-
+    ####################
     result = None
 
     if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:
-        result = deepcopy(stage)
+        result = stage
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
     else:
         nextId = option["nextId"]
 
         result = findStageById(nextId)
-        result = deepcopy(result)
+        result = result
 
         #Вставка предсказания в ответ, если нажали на предсказание 
         if nextId == "Результат предсказания":
@@ -94,7 +92,7 @@ def changeSubscriptionStatus(userId, stage):
 
 
 def makeBroadcastPredictionStage(userId):
-    result = deepcopy(findStageById("Результат предсказания"))
+    result = findStageById("Результат предсказания")
     result["text"] = Predictions.getPrediction(userId)
     result["options"] = findStageById("Рассылка")["options"]
     return result
@@ -104,7 +102,7 @@ def createExcuseStage(userId, currentStage):
 
     nextId = currentStage["options"][0]["nextId"]
     nextStage = findStageById(nextId)
-    nextStage = deepcopy(nextStage)
+    nextStage = nextStage
     nextStage["text"] = "Не делай так больше, пожалуйста) \n\n\n" + currentStage["text"]
 
     return nextStage
