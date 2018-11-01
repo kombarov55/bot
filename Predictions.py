@@ -33,7 +33,7 @@ def hasOutdatedPrediction(userId):
     return summedNow > summedUpdateTime
 
 def sumDays(date):
-    return date.year * 365 + date.month + 30 + date.day
+    return date.year * 365 + date.month * 30 + date.day
 
 userIdToPredictionIndex = {}
 userIdToUpdateTime = {}
