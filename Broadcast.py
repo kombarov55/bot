@@ -15,7 +15,7 @@ import Stage
 def subscribe(userId):
     conn = sqlite3.connect("data/bot.db")
     cursor = conn.cursor()
-    cursor.execute("insert or replace into broadcast values (?, ?)", (userId, 1))
+    cursor.execute("insert or replace into subscriptions values (?, ?)", (userId, 1))
     conn.commit()
     print("Broadcast: subscribed user with userId=" + str(userId))
 
@@ -23,36 +23,40 @@ def subscribe(userId):
 def unsubscribe(userId):
     conn = sqlite3.connect("data/bot.db")
     cursor = conn.cursor()
-    cursor.execute("insert or replace into broadcast values (?, ?)", (userId, 0))
+    cursor.execute("insert or replace into subscriptions values (?, ?)", (userId, 0))
     conn.commit()
     print("Broadcast: unsubscribed user with userId=" + str(userId))
 
 def isSubscribed(userId):
     conn = sqlite3.connect("data/bot.db")
     cursor = conn.cursor()
-    cursor.execute("select enabled from broadcast where user_id = " + str(userId))
+
+    query = "select subscribed from subscriptions where user_id = " + str(userId)
+    print(query)
+    cursor.execute(query)
+
     #Если ряда нет, то вылетает None. Отсюда исключение
     row = cursor.fetchone()
+    print("result: " + str(row))
+
     return row is not None and row[0] == 1
 
-def start():
-    print("send loop")
-    scheduler = BackgroundScheduler()
-    scheduler.start()
-    scheduler.add_job(
-        func = _broadcast,
-        trigger = IntervalTrigger(seconds = 59),
-        id = "sendLoop",
-        name = "send broadcast",
-        replace_existing = True
-    )
-    atexit.register(lambda: scheduler.shutdown())
+def _getAllSubscriptions(): 
+    conn = sqlite3.connect("data/bot.db")
+    cursor = conn.cursor()
+    cursor.execute("select * from subscriptions")
+    rows = cursor.fetchall()
+    result = []
+    for row in rows: 
+        result.append({"user_id": row[0], "subscribed": row[1] == True})
+    
+    return result
 
 def _broadcast():
     print("Broadcast: sending broadcast")
     print("Broadcast: isCorrectTiming? " + str(_isCorrectTiming()))
-    print("Broadcast: db=" + str(db))
     if _isCorrectTiming():
+        db = _getAllSubscriptions()
         for userId, isSubscribed in db.items(): 
             if isSubscribed:
                 stage = Stage.makeBroadcastPredictionStage(userId)
@@ -68,3 +72,16 @@ _goodMorning = ["С добрым утром! &#128521;", "Доброе утро!
 def _getGoodMorningText():
     i = randint(0, len(_goodMorning) - 1)
     return _goodMorning[i]
+
+def start():
+    print("send loop")
+    scheduler = BackgroundScheduler()
+    scheduler.start()
+    scheduler.add_job(
+        func = _broadcast,
+        trigger = IntervalTrigger(seconds = 59),
+        id = "sendLoop",
+        name = "send broadcast",
+        replace_existing = True
+    )
+    atexit.register(lambda: scheduler.shutdown())
