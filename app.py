@@ -22,7 +22,6 @@ def hello_world():
 @app.route('/', methods=['POST'])
 def processing():
     data = json.loads(request.data)
-    #print("app: " + str(data))
     if 'type' not in data.keys():
         return 'ok'
     elif data['type'] == 'confirmation':
@@ -32,8 +31,6 @@ def processing():
         text = data["object"]["text"]
         msg_id = data["object"]["id"]
 
-        print("app: incoming message: userId=" + str(userId) + " text=" + text)
-
         if text == "RESET!":
             Stage.resetUser(userId)
             stage = Stage.stages[0]
@@ -41,17 +38,16 @@ def processing():
             return "ok"
             
         currentStage = Stage.getCurrentStage(userId)
-        if currentStage is not None: 
-            print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
-            if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" or currentStage["id"] == "Вопрос тарологу":
-                option = Stage.findOption(currentStage, text)
-                if option is None:
-                    print("Вопрос перенаправляется получателям")
-                    ApiGate.forwardMessage(msg_id)
-                    return "ok"
-        
+
+        isQuestionStage = currentStage is not None and (currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса") or currentStage["id"] == "Вопрос тарологу"
+        if isQuestionStage:
+            option = Stage.findOption(currentStage, text)
+            asked = option is None
+            if asked:
+                ApiGate.forwardMessage(msg_id)
+                return "ok"
+
         nextStage = Stage.getNextStage(userId, currentStage, text)
-        print("app: nextStage for userId=" + str(userId) + " is " + nextStage["id"])
 
         Stage.updateUserToStage(userId, nextStage)
         ApiGate.sendKeyboardMessage(userId, nextStage["text"], nextStage["options"])
@@ -66,3 +62,4 @@ Broadcast.start()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
+

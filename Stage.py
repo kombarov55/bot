@@ -2,13 +2,12 @@
 
 from flask import json
 from random import randint
-from copy import deepcopy
 
 import Broadcast
 import Predictions
 
 def getCurrentStage(userId):
-    if userId in db:
+    if userId in db: 
         stageId = db[userId]["stageId"]
         return findStageById(stageId)
     else:
@@ -18,53 +17,95 @@ def resetUser(userId):
     db[userId] = {"stageId": stages[0]["id"]}
 
 def getNextStage(userId, stage, text):
-    if containsSwear(text):
-        reflectSwear(userId)
-        return getSwearResponseJson(stage)
-
     if stage is None:
         return stages[0]
 
     option = findOption(stage, text)
-    print("selectedOption=" + str(option))
+    currentId = stage["id"];
 
-    result = None
+    #Фильтр мата: если сматерились, то переходим на стадию "Мат" и отражаем мат для проверки в следующем сообщении
+    if containsSwear(text):
+        reflectSwear(userId)
+        return getSwearResponseJson(stage)
 
     if stage["id"] == "Мат":
-        if containsExcuses(text) or option is not None:
-            swearMap[userId] = False
-            nextId = stage["options"][0]["nextId"]
-            result = deepcopy(findStageById(nextId))
-            result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
-            return result
+        clickedExcuseButton = option is not None
 
-    if stage["id"] == "Мат" and option is None:
-        return getSwearRefusementJson(stage)
+        if containsExcuses(text) or clickedExcuseButton:
+            return createExcuseStage(userId, stage)
+        else:
+            return getSwearRefusementJson(stage)
+
+    ####################
+    result = None
 
     if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:
-        result = deepcopy(stage)
+        result = stage
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
     else:
         nextId = option["nextId"]
-        result = deepcopy(findStageById(nextId))
+
+        result = findStageById(nextId)
+        result = result
+
+        #Вставка предсказания в ответ, если нажали на предсказание
         if nextId == "Результат предсказания":
             result["text"] = Predictions.getPrediction(userId)
-        elif nextId == "Рассылка":
-            Broadcast.subscribe(userId)
-        elif nextId == "Отписка":
-            Broadcast.unsubscribe(userId)
-        elif nextId == "Предсказание" and Broadcast.isSubscribed(userId):
-            result = findStageById("Предсказание с включенной рассылкой")
 
-        if didSwear(userId):
-            result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
+        #Установка статуса подписки (Хочу получать предсказания по утрам / хочу прервать подписку)
+        if shouldChangeSubscriptionStatus(result):
+            changeSubscriptionStatus(userId, result)
+
+        #Подписаться, когда нажали на кнопку подписки
+        if nextId == "Рассылка":
+            Broadcast.subscribe(userId)
+
+        #Отписаться, когда нажали на кнопку отписки
+        if nextId == "Отписка":
+            Broadcast.unsubscribe(userId)
+
     return result
 
+def shouldChangeSubscriptionStatus(stage):
+    currentId = stage["id"]
+    requiredIds = [
+        "Предсказание",
+        "Предсказание с включенной рассылкой",
+        "Результат предсказания",
+        "Рассылка",
+        "Отписка"
+    ]
+
+    return currentId in requiredIds
+
+def changeSubscriptionStatus(userId, stage):
+    currentId = stage["id"]
+    optionToChange = stage["options"][1]
+    finalText = None
+
+    if Broadcast.isSubscribed(userId) is False:
+        finalText = "Хочу получать предсказания по утрам ;)"
+    else:
+        finalText = "Я хочу прервать подписку"
+
+    optionToChange["text"] = finalText
+
+
 def makeBroadcastPredictionStage(userId):
-    result = deepcopy(findStageById("Результат предсказания"))
+    result = findStageById("Результат предсказания")
     result["text"] = Predictions.getPrediction(userId)
     result["options"] = findStageById("Рассылка")["options"]
     return result
+
+def createExcuseStage(userId, currentStage):
+    swearMap[userId] = False
+
+    nextId = currentStage["options"][0]["nextId"]
+    nextStage = findStageById(nextId)
+    nextStage = nextStage
+    nextStage["text"] = "Не делай так больше, пожалуйста) \n\n\n" + currentStage["text"]
+
+    return nextStage
 
 
 def saveUserAndStage(userId, stage):
@@ -73,15 +114,15 @@ def saveUserAndStage(userId, stage):
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
-def findOption(stage, text):
+def findOption(stage, text): 
     options = list(filter(lambda option: option["text"] == text, stage["options"]))
-    if len(options) == 0:
+    if len(options) == 0: 
         return None
     else:
         return options[0]
 
 def updateUserToStage(userId, stage):
-    if userId in db:
+    if userId in db: 
         db[userId]["stageId"] = stage["id"]
     else:
         db[userId] = {"stageId": stage["id"]}
@@ -106,10 +147,10 @@ def getSwearResponseJson(stage):
     nextId = None
     if stage["id"] == "Мат":
         nextId = stage["options"][0]["nextId"]
-    else:
+    else: 
         nextId = stage["id"]
     result["options"][0]["nextId"] = nextId
-
+    
     return result
 
 def getSwearRefusementJson(stage):
@@ -119,10 +160,10 @@ def getSwearRefusementJson(stage):
 
 
 excuses = ["прости", "извини", "сожалею", "извиняюсь"]
-def containsExcuses(str):
+def containsExcuses(str): 
   lowerStr = str.lower()
-  for excuse in excuses:
-    if excuse in lowerStr:
+  for excuse in excuses: 
+    if excuse in lowerStr: 
       return True
   return False
 
@@ -136,14 +177,14 @@ def didSwear(userId):
 
 def reflectSwear(userId):
     swearMap[userId] = True
-
+    
 
 stages = [
     {
         "id": "Первое сообщение",
         "text": "Здравствуй, путник! Зачем ты пришёл к нам?",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Подтверждение предсказания"},
+            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Хочу задать вопрос тарологу", "nextId": "Вопрос тарологу" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
@@ -160,20 +201,11 @@ stages = [
         "id": "Что же",
         "text": "Что же?)",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Подтверждение предсказания"},
+            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
-    },
-    {
-        "id": "Подтверждение предсказания",
-        "text": "Отлично. Ты готов к тому чтобы узнать о завтрашнем дне?",
-        "options": [
-            { "text": "Глаголь ;)", "nextId": "Предсказание" },
-            { "text": "Нет, спасибо.", "nextId": "Как хочешь" },
-            { "text": "Ещё чего. Я сам творю свою судьбу.", "nextId": "Твой выбор" }
-        ]
-    },
+    },    
     {
         "id": "Как хочешь",
         "text": "Как хочешь &#128520;",
@@ -185,11 +217,11 @@ stages = [
         "id": "Замечательно",
         "text": "Замечательно! Скажи чего же тебе хочется)",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Подтверждение предсказания"},
+            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
-    },
+    },    
     {
         "id": "Твой выбор",
         "text": "Тоже верно. Ну, как знаешь. Если всё же захочешь предсказания - пиши &#128524;",
@@ -201,11 +233,11 @@ stages = [
         "id": "Предсказания не помешают",
         "text": "Отлично! ",
         "options": [
-            { "text": "Хочу предсказание)", "nextId": "Подтверждение предсказания"},
+            { "text": "Хочу предсказание)", "nextId": "Предсказание"},
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
-    },
+    },     
     {
         "id": "Предсказание",
         "text": "Отлично! А теперь скажи, чего тебе хочется!",
@@ -250,12 +282,12 @@ stages = [
             { "text": "Хочу получать предсказания по утрам ;)", "nextId": "Рассылка" },
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" }
         ]
-    },
+    },    
     {
         "id": "Назад",
         "text": "Конечно! &#128523; Я к твоим услугам!",
         "options": [
-            { "text": "Получить предсказание", "nextId": "Подтверждение предсказания"},
+            { "text": "Получить предсказание", "nextId": "Предсказание"},
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Ничего, просто смотрю", "nextId": "Прощание" }
         ]
@@ -274,6 +306,13 @@ stages = [
             { "text": "Назад", "nextId": "Назад" }
         ]
     },
+    {
+        "id": "Задание вопроса",
+        "text": "Вопрос отослан админам. В ближайшее время вам на него ответят",
+        "options": [
+            { "text": "Назад", "nextId": "Назад" }
+        ]
+    },    
     {
         "id": "Мат",
         "text": "placeholder",
