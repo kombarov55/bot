@@ -8,6 +8,7 @@ import Stage
 session = vk.Session()
 api = vk.API(session, v=5.80)
 myId=33167934
+asyaId=226223557
 
 def sendTextMessage(userId, text): 
     api.messages.send(access_token=token, user_id=userId, message=text)
@@ -33,7 +34,7 @@ def optionsToButtons(options):
     }], textList))
     return buttons
 
-recipients = [myId]
+recipients = [myId, asyaId]
 def forwardMessage(msgId):
     for userId in recipients:
         currentStage = Stage.getCurrentStage(userId)
@@ -71,7 +72,7 @@ keyboard_json = {
 
 keyboard_json = json.dumps(keyboard_json)
 
-token = "d035b4ff7ff57a162c22eae2a4c036150fdb681dcbe7c406eaef510842aefe5a6b8155a6d751c972a6fd7"
+# token = "d035b4ff7ff57a162c22eae2a4c036150fdb681dcbe7c406eaef510842aefe5a6b8155a6d751c972a6fd7"
 #токен для тестовой группы
-#token = "bf0caf1fb36202a7489084a98ff6bf484f71120a44e952349f4c97c6b42b153ce7425cfde6f0d80220acc"
+token = "bf0caf1fb36202a7489084a98ff6bf484f71120a44e952349f4c97c6b42b153ce7425cfde6f0d80220acc"
 confirmation_token = "c40f8570"
