@@ -39,7 +39,7 @@ def processing():
             
         currentStage = Stage.getCurrentStage(userId)
 
-        isQuestionStage = currentStage is not None and currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" or currentStage["id"] == "Вопрос тарологу"
+        isQuestionStage = currentStage is not None and (currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" or currentStage["id"] == "Вопрос тарологу")
         if isQuestionStage:
             option = Stage.findOption(currentStage, text)
             asked = option is None
