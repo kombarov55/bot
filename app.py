@@ -42,7 +42,7 @@ def processing():
         currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None: 
             print("app: currentStage for userId=" + str(userId) + " is " + currentStage["id"])
-            if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса":
+            if currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" or currentStage["id"] == "Вопрос тарологу":
                 option = Stage.findOption(currentStage, text)
                 if option is None:
                     print("Вопрос перенаправляется получателям")

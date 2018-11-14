@@ -8,7 +8,7 @@ import Broadcast
 import Predictions
 
 def getCurrentStage(userId):
-    if userId in db: 
+    if userId in db:
         stageId = db[userId]["stageId"]
         return findStageById(stageId)
     else:
@@ -31,16 +31,16 @@ def getNextStage(userId, stage, text):
     result = None
 
     if stage["id"] == "Мат":
-        if containsExcuses(text) or option is not None: 
+        if containsExcuses(text) or option is not None:
             swearMap[userId] = False
             nextId = stage["options"][0]["nextId"]
             result = deepcopy(findStageById(nextId))
             result["text"] = "Не делай так больше, пожалуйста) \n\n\n" + result["text"]
             return result
-    
+
     if stage["id"] == "Мат" and option is None:
         return getSwearRefusementJson(stage)
-    
+
     if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:
         result = deepcopy(stage)
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
@@ -65,7 +65,7 @@ def makeBroadcastPredictionStage(userId):
     result["text"] = Predictions.getPrediction(userId)
     result["options"] = findStageById("Рассылка")["options"]
     return result
-    
+
 
 def saveUserAndStage(userId, stage):
     db[userId]["stageId"] = stage
@@ -73,15 +73,15 @@ def saveUserAndStage(userId, stage):
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
-def findOption(stage, text): 
+def findOption(stage, text):
     options = list(filter(lambda option: option["text"] == text, stage["options"]))
-    if len(options) == 0: 
+    if len(options) == 0:
         return None
     else:
         return options[0]
 
 def updateUserToStage(userId, stage):
-    if userId in db: 
+    if userId in db:
         db[userId]["stageId"] = stage["id"]
     else:
         db[userId] = {"stageId": stage["id"]}
@@ -106,10 +106,10 @@ def getSwearResponseJson(stage):
     nextId = None
     if stage["id"] == "Мат":
         nextId = stage["options"][0]["nextId"]
-    else: 
+    else:
         nextId = stage["id"]
     result["options"][0]["nextId"] = nextId
-    
+
     return result
 
 def getSwearRefusementJson(stage):
@@ -119,10 +119,10 @@ def getSwearRefusementJson(stage):
 
 
 excuses = ["прости", "извини", "сожалею", "извиняюсь"]
-def containsExcuses(str): 
+def containsExcuses(str):
   lowerStr = str.lower()
-  for excuse in excuses: 
-    if excuse in lowerStr: 
+  for excuse in excuses:
+    if excuse in lowerStr:
       return True
   return False
 
@@ -136,7 +136,7 @@ def didSwear(userId):
 
 def reflectSwear(userId):
     swearMap[userId] = True
-    
+
 
 stages = [
     {
@@ -145,6 +145,7 @@ stages = [
         "options": [
             { "text": "Хочу предсказание)", "nextId": "Подтверждение предсказания"},
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
+            { "text": "Хочу задать вопрос тарологу", "nextId": "Вопрос тарологу" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
     },
@@ -163,7 +164,7 @@ stages = [
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
-    },    
+    },
     {
         "id": "Подтверждение предсказания",
         "text": "Отлично. Ты готов к тому чтобы узнать о завтрашнем дне?",
@@ -188,7 +189,7 @@ stages = [
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
-    },    
+    },
     {
         "id": "Твой выбор",
         "text": "Тоже верно. Ну, как знаешь. Если всё же захочешь предсказания - пиши &#128524;",
@@ -204,7 +205,7 @@ stages = [
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" },
             { "text": "Ничего, просто смотрю", "nextId": "Ну смотри" }
         ]
-    },     
+    },
     {
         "id": "Предсказание",
         "text": "Отлично! А теперь скажи, чего тебе хочется!",
@@ -249,7 +250,7 @@ stages = [
             { "text": "Хочу получать предсказания по утрам ;)", "nextId": "Рассылка" },
             { "text": "Хочу задать вопрос", "nextId": "Вопрос" }
         ]
-    },    
+    },
     {
         "id": "Назад",
         "text": "Конечно! &#128523; Я к твоим услугам!",
@@ -274,18 +275,18 @@ stages = [
         ]
     },
     {
-        "id": "Задание вопроса",
-        "text": "Вопрос отослан админам. В ближайшее время вам на него ответят",
-        "options": [
-            { "text": "Назад", "nextId": "Назад" }
-        ]
-    },    
-    {
         "id": "Мат",
         "text": "placeholder",
         "options": [
             { "text": "Извини. Больше так не буду.", "nextId": "placeholder" }
         ]
+    },
+    {
+        "id": "Вопрос тарологу",
+        "text": "Отлично, тогда напиши вопрос, который тебя интересует. Через какое то время таролог свяжется и через группу проведёт консультацию. Учтите, что трактовку могут сказать не сразу, а в течение недели. ",
+        "options": [
+        { "text": "Назад", "nextId": "Назад" }
+    ]
     }
 ]
 
