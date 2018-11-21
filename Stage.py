@@ -127,7 +127,7 @@ def findOption(stage, userInput):
 def _findOptionByTypedText(stage, userInput):
     filteringResult = list(filter(lambda option: option["text"] == userInput, stage["options"]))
 
-    found = len(options) != 0
+    found = len(filteringResult) != 0
     if found:
         return filteringResult[0]
     else:
