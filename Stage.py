@@ -39,6 +39,7 @@ def getNextStage(userId, stage, text):
     ####################
     result = None
 
+    # Когда текст не подходит по возможным вариантам.
     if option is None and stage["id"] not in ["Вопрос", "Задание вопроса"]:
         result = stage
         result["text"] = "Я тебя не понял. Лучше выбери ответ!"
@@ -80,6 +81,7 @@ def shouldChangeSubscriptionStatus(stage):
 
 def changeSubscriptionStatus(userId, stage):
     currentId = stage["id"]
+    #FIXME: получать через id, а не индексом. Если поменять порядок, то изменится текст не у того.
     optionToChange = stage["options"][1]
     finalText = None
 
@@ -114,12 +116,36 @@ def saveUserAndStage(userId, stage):
 def findStageById(id):
     return list(filter(lambda x: x["id"] == id, stages))[0]
 
-def findOption(stage, text): 
-    options = list(filter(lambda option: option["text"] == text, stage["options"]))
-    if len(options) == 0: 
-        return None
+def findOption(stage, userInput):
+    result = _findOptionByTypedText(stage, userInput)
+    if result is None:
+        result = _findOptionByTypedNum(stage, userInput)
+
+    return result
+
+
+def _findOptionByTypedText(stage, userInput):
+    filteringResult = list(filter(lambda option: option["text"] == userInput, stage["options"]))
+
+    found = len(options) != 0
+    if found:
+        return filteringResult[0]
     else:
-        return options[0]
+        return None
+
+def _findOptionByTypedNum(stage, userInput):
+    if userInput.isdigit() is False:
+        return None
+
+    options = stage["options"]
+    # число вбивается пользователем в диапазоне от 1.
+    index = int(userInput) - 1
+
+    inRange = index >= 0 and index < len(options)
+    if inRange:
+        return options[index]
+    else:
+        return None
 
 def updateUserToStage(userId, stage):
     if userId in db: 

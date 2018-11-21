@@ -36,9 +36,11 @@ def processing():
             stage = Stage.stages[0]
             ApiGate.sendKeyboardMessage(userId, stage["text"], stage["options"])
             return "ok"
-            
+
+        # По userid получаем сцену, на которой остановился пользователь.
         currentStage = Stage.getCurrentStage(userId)
 
+        # Если задан вопрос
         isQuestionStage = currentStage is not None and (currentStage["id"] == "Вопрос" or currentStage["id"] == "Задание вопроса" or currentStage["id"] == "Вопрос тарологу")
         if isQuestionStage:
             option = Stage.findOption(currentStage, text)
