@@ -21,7 +21,7 @@ def optionsToKeyboard(options):
 
 def sendKeyboardMessage(userId, text, options):
     keyboard = optionsToKeyboard(options)
-    text += "\n" + _keyboardAppendix(options)
+    text += "\n \n \n" + _keyboardAppendix(options)
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
 
 def getUser(userId): 
