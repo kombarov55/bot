@@ -21,6 +21,7 @@ def optionsToKeyboard(options):
 
 def sendKeyboardMessage(userId, text, options):
     keyboard = optionsToKeyboard(options)
+    text += "\n" + _keyboardAppendix(options)
     api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
 
 def getUser(userId): 
@@ -43,6 +44,19 @@ def forwardMessage(msgId):
             api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId], keyboard = keyboard)
         else: 
             api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId])
+
+def _keyboardAppendix(options):
+    result = ""
+    index = 1
+
+    for option in options:
+        result += str(index) + ". "
+        result += option["text"]
+        result += "\n"
+
+        index += 1
+
+    return result
     
 
 # token = "d035b4ff7ff57a162c22eae2a4c036150fdb681dcbe7c406eaef510842aefe5a6b8155a6d751c972a6fd7"
