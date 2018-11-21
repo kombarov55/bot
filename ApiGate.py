@@ -50,7 +50,7 @@ def _keyboardAppendix(options):
     index = 1
 
     for option in options:
-        result += str(index) + ". "
+        result += str(index) + " - "
         result += option["text"]
         result += "\n"
 
