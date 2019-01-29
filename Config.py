@@ -1,0 +1,4 @@
+token="81628c3b6956b6fb17fb6c7cd492fe53739f7adde0ff0b91cc11b39677d77b506ba206e2e26d375c06c5b"
+confirmationToken="be8af98b"
+port=8080
+apiVersion=5.80
