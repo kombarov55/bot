@@ -6,6 +6,7 @@ import ApiGate
 import Broadcast
 import Stage
 import Tracer
+import Config
 
 app = Flask(__name__)
 
@@ -25,7 +26,7 @@ def processing():
     if 'type' not in data.keys():
         return 'ok'
     elif data['type'] == 'confirmation':
-        return ApiGate.confirmation_token
+        return Config.confirmationToken
     elif data['type'] == 'message_new':
         userId = data['object']['peer_id']
         text = data["object"]["text"]
@@ -63,5 +64,5 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 Broadcast.start()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8082)
+    app.run(host="0.0.0.0", port=Config.port)
 

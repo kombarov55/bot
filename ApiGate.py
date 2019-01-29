@@ -4,14 +4,17 @@ import vk
 import json
 
 import Stage
+import Config
 
 session = vk.Session()
-api = vk.API(session, v=5.80)
+api = vk.API(session, v=Config.apiVersion)
+
 myId=33167934
 asyaId=226223557
 
+
 def sendTextMessage(userId, text): 
-    api.messages.send(access_token=token, user_id=userId, message=text)
+    api.messages.send(access_token=Config.token, user_id=userId, message=text)
 
 def optionsToKeyboard(options):
     buttons = list(map(lambda option: [{"color": "negative", "action": {"type": "text", "label": option["text"]}}], options))
@@ -22,10 +25,10 @@ def optionsToKeyboard(options):
 def sendKeyboardMessage(userId, text, options):
     keyboard = optionsToKeyboard(options)
     text += "\n==================\n" + _keyboardAppendix(options)
-    api.messages.send(access_token = token, user_id = userId, message = text, keyboard = keyboard)
+    api.messages.send(access_token=Config.token, user_id = userId, message = text, keyboard = keyboard)
 
 def getUser(userId): 
-    return api.users.get(user_id=userId, access_token=token)[0]
+    return api.users.get(user_id=userId, access_token=Config.token)[0]
 
 def optionsToButtons(options):
     textList = list(map(lambda option: option[0]["text"], options))
@@ -41,9 +44,9 @@ def forwardMessage(msgId):
         currentStage = Stage.getCurrentStage(userId)
         if currentStage is not None:
             keyboard = optionsToKeyboard(currentStage["options"])
-            api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId], keyboard = keyboard)
+            api.messages.send(access_token = Config.token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId], keyboard = keyboard)
         else: 
-            api.messages.send(access_token = token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId])
+            api.messages.send(access_token = Config.token, user_id = userId, message = "Нам в группе задали вопрос:", forward_messages = [msgId])
 
 def _keyboardAppendix(options):
     result = ""
@@ -57,9 +60,3 @@ def _keyboardAppendix(options):
         index += 1
 
     return result
-    
-
-token = "d035b4ff7ff57a162c22eae2a4c036150fdb681dcbe7c406eaef510842aefe5a6b8155a6d751c972a6fd7"
-#токен для тестовой группы
-# token = "bf0caf1fb36202a7489084a98ff6bf484f71120a44e952349f4c97c6b42b153ce7425cfde6f0d80220acc"
-confirmation_token = "c40f8570"
